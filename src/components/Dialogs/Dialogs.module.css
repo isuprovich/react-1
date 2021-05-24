@@ -1,0 +1,28 @@
+.messagesList {
+    width: 75%;
+    right: 0;
+    bottom: 110px;
+    top: 0;
+    position: absolute;
+    padding: 10px 0;
+    overflow-y: auto;
+}
+
+.dialogsList {
+    position: absolute;
+    left: 0;
+    bottom: 110px;
+    top: 0;
+    width: 24%;
+    color: black;
+    padding: 10px 0;
+    overflow-y: auto;
+}
+
+.dialog a {
+    color: #000;
+}
+
+.dialog a.active {
+    color: #008080;
+}

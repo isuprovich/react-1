@@ -1,0 +1,31 @@
+.dialog {
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 40px auto;
+}
+
+.dialogAva {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+}
+
+.gridDiv {
+    height: 30px;
+}
+
+.dialog a {
+    display: inline-block;
+    color: #000;
+    height: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+.dialog a.active {
+    color: #008080;
+}

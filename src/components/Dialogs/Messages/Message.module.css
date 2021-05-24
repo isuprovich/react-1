@@ -1,0 +1,32 @@
+.incomingMessage {
+    display: grid;
+    grid-template-areas:
+    "ava namef"
+    "ava textf";
+    grid-template-columns: min-content max-content;
+    column-gap: 10px;
+    color: black;
+    padding: 5px 10px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: max-content;
+}
+
+.avaSmall {
+    display: block;
+    grid-area: ava;
+    width: 40px;
+}
+
+.nameField {
+    grid-area: namef;
+}
+
+.messageText {
+    grid-area: textf;
+    width: min-content;
+    max-width: 40vw;
+    word-wrap: break-word;
+}

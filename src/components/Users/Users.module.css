@@ -1,0 +1,85 @@
+.wrapper {
+    display: grid;
+    padding-bottom: 10px;
+    grid-gap: 10px;
+    margin-top: 10px;
+}
+
+.userCard {
+    display: grid;
+    line-height: 40px;
+    grid-template-columns: 40px min-content auto min-content;
+    grid-column-gap: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.userCard:hover {
+    background-color: #c7e9e9;
+}
+
+.navLink {
+    color: #004d4d;
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.userAva100 {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.followButton {
+    width: 90px;
+}
+
+.followButton:disabled {
+    background-color: gray;
+}
+
+.unfollowButton {
+    width: 90px;
+    margin: 10px 0 0 0;
+    background-color: rgb(202, 53, 53);
+}
+
+.unfollowButton:hover {
+    background-color: rgb(232, 24, 24);
+}
+
+.unfollowButton:disabled {
+    background-color: gray;
+}
+
+.textOverflow {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: auto;
+    white-space: nowrap;
+}
+
+.pageButtonsWrapper {
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.pageButton {
+    display: inline-block;
+    font-size: 1.17em;
+    cursor: pointer;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+.selectedPage {
+    background-color: #c7e9e9;
+}

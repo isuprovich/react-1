@@ -1,0 +1,26 @@
+.item {
+    display: grid;
+    font-size: 14px;
+    grid-template-areas:
+    "ava user"
+    "ava post";
+    grid-template-rows: auto;
+    grid-template-columns: 60px 10fr;
+    padding: 5px 0;
+}
+
+.item img {
+    grid-area: ava;
+    width: 40px;
+}
+
+.userName {
+    grid-area: user;
+    font-weight: bold;
+    color: #004d4d;
+}
+
+.post {
+    grid-area: post;
+    width: 100%;
+}

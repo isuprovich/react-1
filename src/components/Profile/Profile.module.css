@@ -1,0 +1,6 @@
+.profile {
+    display: grid;
+    grid-template-areas: 
+    "ava posts";
+    grid-template-columns: min-content auto;
+}

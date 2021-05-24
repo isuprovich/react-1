@@ -1,0 +1,29 @@
+.profileInfo {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  height: max-content;
+}
+
+.username {
+  text-align: center;
+}
+
+.Ava {
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.friendsBtn {
+  display: block;
+  margin: 10px auto;
+}
+
+.status {
+  color: green;
+  text-align: center;
+}
