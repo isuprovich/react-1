@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import { requestUsers, follow, setCurrentPage, unfollow } from '../../redux/usersReducer';
+import { getPageSize, getUsers, getTotalUsersCount, getCurrentPage, getFollowingInProgress } from '../../redux/usersSelectors';
 import React from 'react';
 import Users from './Users';
-import { getPageSize, getUsers, getTotalUsersCount, getCurrentPage, getFollowingInProgress } from '../../redux/usersSelectors';
+import UsersPagination from './UsersPagination';
 
 class UsersContainer extends React.Component {
     componentDidMount() {
@@ -16,16 +17,16 @@ class UsersContainer extends React.Component {
     render() {
         console.log('Render Users')
         return <>
-            <Users
+            <UsersPagination
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
+                onPageChange={this.onPageChange} />
+            <Users
                 users={this.props.users}
-                onPageChange={this.onPageChange}
                 follow={this.props.follow}
                 unfollow={this.props.unfollow}
-                followingInProgress={this.props.followingInProgress}
-            />
+                followingInProgress={this.props.followingInProgress} />
         </>
     }
 }

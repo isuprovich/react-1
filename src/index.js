@@ -7,8 +7,6 @@ import store from './redux/reduxStore'
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-console.log('index.js loaded')
-
 ReactDOM.render(
     <BrowserRouter>
         <Provider store={store}>

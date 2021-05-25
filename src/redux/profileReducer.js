@@ -49,31 +49,20 @@ export const setUserProfile = (profile) => ({ type: SET_PROFILE, profile })
 export const setUserStatus = (status) => ({ type: SET_STATUS, status })
 
 //THUNKS
-export const getProfile = (userid) => {
-    return (dispatch) => {
-        dispatch(toggleIsFetching(true));
-        profileAPI.getProfile(userid).then(response => {
-            dispatch(toggleIsFetching(false));
-            dispatch(setUserProfile(response.data));
-        });
-    }
+export const getProfile = (userid) => async (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    let response = await profileAPI.getProfile(userid)
+    dispatch(toggleIsFetching(false));
+    dispatch(setUserProfile(response.data));
 }
-export const getStatus = (userid) => {
-    return (dispatch) => {
-        profileAPI.getProfileStatus(userid).then(response => {
-            dispatch(setUserStatus(response.data));
-            console.log(`Got status: ${response.data}`)
-        })
-    }
+export const getStatus = (userid) => async (dispatch) => {
+    let response = await profileAPI.getProfileStatus(userid)
+    dispatch(setUserStatus(response.data));
 }
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        profileAPI.updateStatus(status).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setUserStatus(status));
-                console.log('Status changed (updateStatus)')
-            }
-        })
+export const updateStatus = (status) => async (dispatch) => {
+    let response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setUserStatus(status));
     }
 }
 

@@ -1,9 +1,9 @@
 import { stopSubmit } from 'redux-form';
 import { authAPI } from '../API/api';
 
-const SET_USER_DATA = 'SET_USER_DATA';
-const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL';
-const TOGGLE_CAPTCHA = 'TOGGLE_CAPTCHA';
+const SET_USER_DATA = 'my-app/auth/SET_USER_DATA';
+const SET_CAPTCHA_URL = 'my-app/auth/SET_CAPTCHA_URL';
+const TOGGLE_CAPTCHA = 'my-app/auth/TOGGLE_CAPTCHA';
 
 let initialState = {
     id: null,
@@ -42,55 +42,40 @@ export const toggleCaptcha = (needCaptcha) => ({ type: TOGGLE_CAPTCHA, needCaptc
 export const getCaptchaUrl = (captchaUrl) => ({ type: SET_CAPTCHA_URL, captchaUrl });
 
 //THUNKS
-export const getAuthUserData = () => (dispatch) => {
-    return authAPI.me()
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                let { id, email, login } = response.data.data;
-                dispatch(setAuthUserData(id, email, login, true));
-            }
-        });
+export const getAuthUserData = () => async (dispatch) => {
+    let response = await authAPI.me()
+    if (response.data.resultCode === 0) {
+        let { id, email, login } = response.data.data;
+        dispatch(setAuthUserData(id, email, login, true));
+    }
 }
 
-export const login = (email, password, rememberMe, captcha) => (dispatch) => {
+export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
     dispatch(toggleCaptcha(false));
-    authAPI.login(email, password, rememberMe, captcha)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(getAuthUserData());
-                console.log('SUCCESSFULL LOGIN')
-            } else if (response.data.resultCode === 10) {
-                console.log('NEED CAPTCHA')
-                authAPI.captcha()
-                    .then(response => {
-                        dispatch(toggleCaptcha(true));
-                        console.log('CAPTCHA TOGGLE ON')
-                        console.log(response.data.url)
-                        dispatch(getCaptchaUrl(response.data.url))
-                    }) 
-            } else {
-                let message = response.data.messages.length > 0 ? response.data.messages[0] : "ОШИБКА"
-                dispatch(stopSubmit('login', { _error: message }))
-                console.log('LOGIN ERROR')
-            }
-        });
+    let response = await authAPI.login(email, password, rememberMe, captcha)
+    if (response.data.resultCode === 0) {
+        dispatch(getAuthUserData());
+    } else if (response.data.resultCode === 10) {
+        let responseCaptcha = await authAPI.captcha()
+        dispatch(toggleCaptcha(true));
+        dispatch(getCaptchaUrl(responseCaptcha.data.url))
+    } else {
+        let message = response.data.messages.length > 0 ? response.data.messages[0] : "ОШИБКА"
+        dispatch(stopSubmit('login', { _error: message }))
+    }
 }
 
-export const logout = () => (dispatch) => {
-    authAPI.logout()
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setAuthUserData(null, null, null, false));
-            }
-        });
+export const logout = () => async (dispatch) => {
+    let response = await authAPI.logout()
+    if (response.data.resultCode === 0) {
+        dispatch(setAuthUserData(null, null, null, false));
+    }
 }
 
-export const getCaptcha = () => (dispatch) => {
-    authAPI.captcha()
-        .then(response => {
-            console.log(response.data.url)
-            dispatch(getCaptchaUrl(response.data.url))
-        })
+export const getCaptcha = () => async (dispatch) => {
+    let response = await authAPI.captcha()
+    console.log(response.data.url)
+    dispatch(getCaptchaUrl(response.data.url))
 }
 
 export default authReducer;

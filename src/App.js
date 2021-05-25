@@ -1,25 +1,23 @@
 import React from 'react';
 import './App.css';
-import ProfileContainer from './components/Profile/ProfileContainer';
-import Footer from './components/Footer/Footer';
-import UsersContainer from './components/Users/UsersContainer';
-import { Route, withRouter } from 'react-router';
+import Preloader from './components/common/preloader/preloader';
 import HeaderContainer from './components/Header/HeaderContainer';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
 import LoginContainer from './components/Login/LoginContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
+import UsersContainer from './components/Users/UsersContainer';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
+import Footer from './components/Footer/Footer';
+import { Route, withRouter } from 'react-router';
 import { initApp } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Preloader from './components/common/preloader/preloader';
 
 class App extends React.Component {
   componentDidMount() {
     this.props.initApp();
-    console.log('Initializing app...')
   }
   render() {
     if(!this.props.initialized) return <Preloader />
-    console.log('Rerender all components...')
     return (
       <div className='app-wrapper'>
         <HeaderContainer />

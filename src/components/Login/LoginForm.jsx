@@ -1,55 +1,22 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { Input } from '../common/FormsControls/FormsControls';
+import { reduxForm } from 'redux-form';
+import { createField, Input } from '../common/FormsControls/FormsControls';
 import s from './LoginForm.module.css';
 import { required } from '../../utils/validators/validators'
 
-const LoginForm = (props) => {
-    return <form className={s.loginform} onSubmit={props.handleSubmit}>
-        <div>
-            <Field
-                name={'email'}
-                component={Input}
-                placeholder={"Ваш E-mail"}
-                validate={[required]}
-            />
-        </div>
-        <div>
-            <Field
-                name={'password'}
-                type={'password'}
-                component={Input}
-                placeholder={"Пароль"}
-                validate={[required]}
-            />
-        </div>
-        <div className={s.rememberMe}>
-            <Field
-                name={'rememberMe'}
-                component={Input}
-                type={"checkbox"}
-                className={s.checkbox}
-            /><div className={s.rememberMeText}>Запомнить меня?</div>
-        </div>
-        {props.needCaptcha && <div>
+const LoginForm = ({ handleSubmit, error, needCaptcha, captchaUrl }) => {
+    return <form className={s.loginform} onSubmit={handleSubmit}>
+        {createField('email', 'email', 'Ваш E-mail', [required], Input)}
+        {createField('password', 'password', 'Пароль', [required], Input)}
+        {createField('rememberMe', 'checkbox', [], [], Input, s.rememberMe, <div className={s.rememberMeText}>Запомнить меня?</div>)}
+        {needCaptcha && <div>
             <div>
-                <img src={props.captchaUrl} alt="CAPTCHA" />
+                <img src={captchaUrl} alt="CAPTCHA" />
             </div>
-            <div>
-                <Field
-                    name={'captcha'}
-                    type={'captcha'}
-                    component={Input}
-                    placeholder={"Введите код с картинки"}
-                />
-            </div>
+            {createField('captcha', 'captcha', 'Введите код с картинки', [required], Input)}
         </div>}
-        {props.error && <div className={s.commonError}>
-            {props.error}
-        </div>}
-        <div>
-            <button className={s.loginBtn}>Войти</button>
-        </div>
+        {error && <div className={s.commonError}>{error}</div>}
+        <div><button className={s.loginBtn}>Войти</button></div>
     </form>
 }
 
