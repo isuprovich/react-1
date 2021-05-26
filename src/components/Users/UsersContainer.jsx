@@ -7,15 +7,12 @@ import UsersPagination from './UsersPagination';
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        console.log('Mount UsersContainer')
         this.props.requestUsers(this.props.currentPage, this.props.pageSize);
     }
     onPageChange = (pageNumber) => {
-        console.log('pageChange UsersContainer')
         this.props.requestUsers(pageNumber, this.props.pageSize);
     }
     render() {
-        console.log('Render Users')
         return <>
             <UsersPagination
                 totalUsersCount={this.props.totalUsersCount}
@@ -32,7 +29,6 @@ class UsersContainer extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-    console.log('MSTP Users')
     return {
         users: getUsers(state),
         pageSize: getPageSize(state),
