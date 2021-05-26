@@ -1,9 +1,9 @@
 import React from 'react'
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { maxLengthCreator, required } from '../../../utils/validators/validators';
-import { Textarea } from '../../common/FormsControls/FormsControls';
+import { createField, Textarea } from '../../common/FormsControls/FormsControls';
 
 const MyPosts = React.memo(props => {
     console.log('Render MyPosts')
@@ -27,11 +27,7 @@ const maxLength200 = maxLengthCreator(200);
 const AddPostForm = (props) => {
     return (
         <form className={s.newPostForm} onSubmit={props.handleSubmit}>
-            <Field
-                component={Textarea}
-                name={'newPostText'}
-                validate={[required, maxLength200]}
-                placeholder={'Введите текст вашего поста...'} />
+            {createField('newPostText', 'text', 'Введите текст вашего поста...', [required, maxLength200], Textarea)}
             <button>Опубликовать</button>
         </form>
     )
