@@ -4,11 +4,13 @@ import { profileAPI } from '../API/api';
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET_PROFILE';
 const SET_STATUS = 'SET_STATUS';
-const UPDATE_AVA_SUCCESS = 'UPDATE_AVA_SUCCESS'
+const PROFILE_EDIT_TOGGLE = 'PROFILE_EDIT_TOGGLE'
+const UPDATE_AVA_SUCCESS = 'UPDATE_AVA_SUCCESS';
 
 let initialState = {
     profile: null,
     status: '',
+    profileEditMode: false,
     posts: [
         { id: 1, user: 'Admin', message: 'https://youtu.be/_X3dVadZp2U?t=406' }
     ]
@@ -47,6 +49,12 @@ const profileReducer = (state = initialState, action) => {
                     photos: { ...action.photos }
                 }
             }
+        case PROFILE_EDIT_TOGGLE:
+            let newMode = !state.profileEditMode
+            return {
+                ...state,
+                profileEditMode: newMode
+            }
         default:
             return state;
     }
@@ -57,6 +65,7 @@ export const addPost = (newPostText) => ({ type: ADD_POST, newPostText });
 export const setUserProfile = (profile) => ({ type: SET_PROFILE, profile });
 export const setUserStatus = (status) => ({ type: SET_STATUS, status });
 export const updateAvaSuccess = (photos) => ({ type: UPDATE_AVA_SUCCESS, photos })
+export const profileEditToggle = () => ({type: PROFILE_EDIT_TOGGLE})
 
 //THUNKS
 export const getProfile = (userid) => async (dispatch) => {

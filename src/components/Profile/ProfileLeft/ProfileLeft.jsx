@@ -21,7 +21,7 @@ const ProfileLeft = ({profile, myId, status, updateStatus, saveAva}) => {
                     <input className={s.changeAvaInput} type="file" onChange={avaNewSelected} />
                 </div>}
             </div>
-            <button className={s.friendsBtn}>Добавить в друзья</button>
+            {myId !== profile.userId && <button className={s.friendsBtn}>Добавить в друзья</button>}
         </div>
     );
 }

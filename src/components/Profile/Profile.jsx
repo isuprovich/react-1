@@ -3,11 +3,16 @@ import s from './Profile.module.css';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import ProfileLeft from './ProfileLeft/ProfileLeft';
+import ProfileEditor from './ProfileEditor/ProfileEditor';
 import Preloader from '../common/preloader/preloader';
 
 const Profile = (props) => {
+    const onSubmit = (formData) => {
+        console.log(formData)
+    }
     if (props.profile != null) return (
         <div className={s.profile}>
+            {props.profileEditMode && <ProfileEditor profile={props.profile} onSubmit={onSubmit} />}
             <ProfileLeft
                 profile={props.profile}
                 myId={props.myId}
@@ -18,6 +23,7 @@ const Profile = (props) => {
             <ProfileInfo
                 profile={props.profile}
                 myId={props.myId}
+                profileEditToggle={props.profileEditToggle}
             />
             <MyPostsContainer className={s.posts} />
         </div>

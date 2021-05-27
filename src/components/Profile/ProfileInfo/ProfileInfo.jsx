@@ -1,15 +1,12 @@
 import React from 'react'
 import s from './ProfileInfo.module.css';
 
-const ProfileInfo = ({ profile, myId }) => {
-    let test = () => {
-        alert('AAAAAAAA')
-    }
+const ProfileInfo = ({ profile, myId, profileEditToggle }) => {
     return (
         <div className={s.profileInfo}>
             {myId === profile.userId && <div
                 className={s.editProfile}
-                onClick={test}
+                onClick={profileEditToggle}
             ></div>}
             <div>Ищу работу: {profile.lookingForAJob ? "да" : "нет"}</div>
             <div>Обо мне: {profile.aboutMe}</div>
