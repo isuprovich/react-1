@@ -1,6 +1,8 @@
 .profile {
     display: grid;
     grid-template-areas: 
-    "ava posts";
+    "left info"
+    "left posts";
     grid-template-columns: min-content auto;
+    grid-template-rows: max-content auto;
 }

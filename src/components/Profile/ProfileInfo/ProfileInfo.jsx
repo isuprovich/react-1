@@ -1,22 +1,26 @@
 import React from 'react'
 import s from './ProfileInfo.module.css';
-import StatusWithHooks from './Status/StatusWithHooks';
 
-const ProfileInfo = (props) => {
+const ProfileInfo = ({ profile, myId }) => {
+    let test = () => {
+        alert('AAAAAAAA')
+    }
     return (
         <div className={s.profileInfo}>
-            <h2 className={s.username}>{props.profile.fullName}</h2>
-            <StatusWithHooks status={props.status} updateStatus={props.updateStatus} />
-            <img src={props.profile.photos.large != null ? props.profile.photos.large : "../avatar_placeholder.png"} alt='ava' className={s.Ava} />
-            <button className={s.friendsBtn}>Добавить в друзья</button>
-            <div>ВК: {props.profile.contacts.vk}</div>
-            <div>Instagram: {props.profile.contacts.instagram}</div>
-            <div>Github: {props.profile.contacts.github}</div>
-            <div>facebook: {props.profile.contacts.facebook}</div>
-            <div>twitter: {props.profile.contacts.twitter}</div>
-            <div>website: {props.profile.contacts.website}</div>
-            <div>youtube: {props.profile.contacts.youtube}</div>
-            <div>mainLink: {props.profile.contacts.mainLink}</div>
+            {myId === profile.userId && <div
+                className={s.editProfile}
+                onClick={test}
+            ></div>}
+            <div>Ищу работу: {profile.lookingForAJob ? "да" : "нет"}</div>
+            <div>Обо мне: {profile.aboutMe}</div>
+            <div>ВК: {profile.contacts.vk}</div>
+            <div>Instagram: {profile.contacts.instagram}</div>
+            <div>Github: {profile.contacts.github}</div>
+            <div>facebook: {profile.contacts.facebook}</div>
+            <div>twitter: {profile.contacts.twitter}</div>
+            <div>website: {profile.contacts.website}</div>
+            <div>youtube: {profile.contacts.youtube}</div>
+            <div>mainLink: {profile.contacts.mainLink}</div>
         </div>
     );
 }

@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import s from './Users.module.css';
+import avaPlaceholder from '../../assets/avatar_placeholder.png'
 
 let User = ({user, followingInProgress, follow, unfollow}) => {
     return <div key={user.id} className={s.userCard}>
-        <img src={user.photos.small != null ? user.photos.small : "avatar_placeholder.png"} alt="User avatar" className={s.userAva100} />
+        <img src={user.photos.small != null ? user.photos.small : avaPlaceholder} alt="User avatar" className={s.userAva100} />
         <NavLink to={'/profile/' + user.id} className={s.navLink}>{user.name}</NavLink>
         <div className={s.textOverflow}>{user.status}</div>
         <div className={s.followButtons}>

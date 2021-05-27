@@ -30,6 +30,13 @@ export const profileAPI = {
     },
     updateStatus(status) {
         return axiosInstance.put(`profile/status`, { status })
+    },
+    uploadAva(file) {
+        const formData = new FormData();
+        formData.append("image", file)
+        return axiosInstance.put(`profile/photo`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
     }
 }
 
