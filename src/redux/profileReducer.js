@@ -74,6 +74,13 @@ export const getProfile = (userid) => async (dispatch) => {
     dispatch(setUserProfile(response.data));
     dispatch(toggleIsFetching(false));
 }
+export const updateProfileInfoThunk = (newProfileInfo) => async (dispatch, getState) => {
+    const userid = getState().auth.id;
+    const response = await profileAPI.updateProfileInfo(newProfileInfo)
+    if (response.data.resultCode === 0) {
+        dispatch(getProfile(userid))
+    }
+}
 export const getStatus = (userid) => async (dispatch) => {
     let response = await profileAPI.getProfileStatus(userid)
     dispatch(setUserStatus(response.data));

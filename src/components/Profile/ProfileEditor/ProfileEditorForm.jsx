@@ -1,33 +1,38 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import s from './ProfileEditor.module.css'
 import { reduxForm } from 'redux-form';
 import { createField, Input } from '../../common/FormsControls/FormsControls';
 
 const ProfileEditorForm = (props) => {
-
-    let [profile, setProfileInfo] = useState(props.profile)
-
-    useEffect(() => {
-        setProfileInfo(props.profile);
-    }, [props.profile]);
-
-    // const onProfileChange = (e) => {
-    //     setProfileInfo(e.currentTarget.value)
-    // }
-
-    return <form>
-        Редактирование профиля:
-        Ищу работу: {profile.lookingForAJob ? "да" : "нет"}
-        {createField("lookingForAJob", "checkbox", "lookingForAJob", [], Input)}
-        {createField("aboutMe", "text", "Обо мне", [], Input)}
-        {createField("VK", "text", "ВК", [], Input)}
-        {createField("Instagram", "text", "Instagram", [], Input)}
-        {createField("Github", "text", "Github", [], Input)}
-        {createField("Facebook", "text", "Facebook", [], Input)}
-        {createField("twitter", "text", "twitter", [], Input)}
-        {createField("website", "text", "website", [], Input)}
-        {createField("youtube", "text", "youtube", [], Input)}
-        {createField("mainLink", "text", "mainLink", [], Input)}
-        <button>Сохранить изменения</button>
+    return <form onSubmit={props.handleSubmit}>
+        <h2>Редактирование профиля</h2>
+        <div className={s.wrapper}>
+            <div classname={s.gridDesc}>Полное имя:</div>
+            {createField("fullName", "text", "Полное имя", [], Input)}
+            <div>Ищу работу:</div>
+            {createField("lookingForAJob", "checkbox", "lookingForAJob", [], Input, [], <div>Ищу работу</div>)}
+            <div>Описание:</div>
+            {createField("lookingForAJobDescription", "text", "Описание поиска работы", [], Input)}
+            <div>Обо мне:</div>
+            {createField("aboutMe", "text", "Обо мне", [], Input)}
+            <div>ВК:</div>
+            {createField("contacts.vk", "text", "ВК", [], Input)}
+            <div>Instagram:</div>
+            {createField("contacts.instagram", "text", "Instagram", [], Input)}
+            <div>Github:</div>
+            {createField("contacts.github", "text", "Github", [], Input)}
+            <div>Facebook:</div>
+            {createField("contacts.facebook", "text", "Facebook", [], Input)}
+            <div>Twitter:</div>
+            {createField("contacts.twitter", "text", "Twitter", [], Input)}
+            <div>Сайт:</div>
+            {createField("contacts.website", "text", "Сайт", [], Input)}
+            <div>Youtube:</div>
+            {createField("contacts.youtube", "text", "Youtube", [], Input)}
+            <div>Ссылка:</div>
+            {createField("contacts.mainLink", "text", "Главная ссылка", [], Input)}
+        </div>
+        <button className={s.updInfoBtn}>Сохранить изменения</button>
     </form>
 }
 

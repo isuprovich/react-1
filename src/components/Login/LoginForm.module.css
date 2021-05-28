@@ -5,20 +5,22 @@
 }
 
 .checkbox {
+    display: inline-block;
     width: fit-content;
 }
 
-.rememberMe {
+.checkboxWrapper {
     display: grid;
     width: max-content;
+    grid-template-columns: min-content max-content;
+    gap: 5px;
     margin: 0 auto;
-    margin-bottom: 5px;
-    grid-template-columns: auto auto;
-    grid-column-gap: 5px;
+    margin-bottom: 10px;
 }
 
-.rememberMeText {
-    line-height: 16px;
+.checkboxName {
+    display: inline-block;
+    line-height: 20px;
 }
 
 .commonError {

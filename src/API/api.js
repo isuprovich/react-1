@@ -31,6 +31,9 @@ export const profileAPI = {
     updateStatus(status) {
         return axiosInstance.put(`profile/status`, { status })
     },
+    updateProfileInfo(newProfileData) {
+        return axiosInstance.put(`profile`, newProfileData)
+    },
     uploadAva(file) {
         const formData = new FormData();
         formData.append("image", file)

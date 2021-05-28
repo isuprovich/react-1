@@ -8,7 +8,8 @@ import Preloader from '../common/preloader/preloader';
 
 const Profile = (props) => {
     const onSubmit = (formData) => {
-        console.log(formData)
+        props.updateProfileInfoThunk(formData)
+        props.profileEditToggle()
     }
     if (props.profile != null) return (
         <div className={s.profile}>

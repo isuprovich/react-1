@@ -1,7 +1,7 @@
 import React from 'react'
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { getProfile, getStatus, updateStatus, saveAva, profileEditToggle } from '../../redux/profileReducer'
+import { getProfile, getStatus, updateStatus, saveAva, profileEditToggle, updateProfileInfoThunk } from '../../redux/profileReducer'
 import { Redirect, withRouter } from 'react-router';
 import { compose } from 'redux';
 import Preloader from '../common/preloader/preloader';
@@ -41,6 +41,7 @@ class ProfileContainer extends React.Component {
                 saveAva={this.props.saveAva}
                 myId={this.props.myId}
                 profileEditToggle={this.props.profileEditToggle}
+                updateProfileInfoThunk={this.props.updateProfileInfoThunk}
             />
         </>
     }
@@ -56,6 +57,6 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose(
-    connect(mapStateToProps, { getProfile, getStatus, updateStatus, saveAva, profileEditToggle }),
+    connect(mapStateToProps, { getProfile, getStatus, updateStatus, saveAva, profileEditToggle, updateProfileInfoThunk }),
     withRouter
 )(ProfileContainer)

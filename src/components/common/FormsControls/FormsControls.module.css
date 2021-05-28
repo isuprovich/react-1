@@ -1,6 +1,7 @@
 .formControl div {
     width: min-content;
     margin-right: 0;
+    height: min-content;
 }
 
 .absoluteNote {

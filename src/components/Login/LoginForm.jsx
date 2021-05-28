@@ -8,7 +8,10 @@ const LoginForm = ({ handleSubmit, error, needCaptcha, captchaUrl }) => {
     return <form className={s.loginform} onSubmit={handleSubmit}>
         {createField('email', 'email', 'Ваш E-mail', [required], Input)}
         {createField('password', 'password', 'Пароль', [required], Input)}
-        {createField('rememberMe', 'checkbox', [], [], Input, s.rememberMe, <div className={s.rememberMeText}>Запомнить меня?</div>)}
+        <div className={s.checkboxWrapper}>
+            {createField('rememberMe', 'checkbox', [], [], Input, s.checkbox)}
+            <span className={s.checkboxName}>Запомнить меня?</span>
+        </div>
         {needCaptcha && <div>
             <div>
                 <img src={captchaUrl} alt="CAPTCHA" />
