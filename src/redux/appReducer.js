@@ -1,9 +1,12 @@
 import { getAuthUserData } from './authReducer';
 
 const INIT_SUCCESS = 'INIT_SUCCESS';
+const ERROR = 'NEW_ERROR';
 
 let initialState = {
-    initialized: false
+    initialized: false,
+    notifyError: false,
+    errorMessage: null
 }
 
 const appReducer = (state = initialState, action) => {
@@ -13,6 +16,12 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 initialized: true
             }
+        case ERROR:
+            return {
+                ...state,
+                notifyError: action.notifyError,
+                errorMessage: action.errorMessage
+            }
         default:
             return state;
     };
@@ -20,6 +29,7 @@ const appReducer = (state = initialState, action) => {
 
 //ACTION-CREATORS
 export const initSuccess = () => ({ type: INIT_SUCCESS });
+export const showError = (notifyError, errorMessage) => ({ type: ERROR, notifyError, errorMessage })
 
 //THUNKS
 export const initApp = () => (dispatch) => {
@@ -27,6 +37,10 @@ export const initApp = () => (dispatch) => {
     Promise.all([promise]).then(() => {
         dispatch(initSuccess());
     });
+}
+export const showErrorThunk = (notifyError, errorMessage) => (dispatch) => {
+    dispatch(showError(notifyError, errorMessage))
+    setTimeout(() => {dispatch(showError(false, null))}, 10000)
 }
 
 export default appReducer;

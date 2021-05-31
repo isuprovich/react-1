@@ -4,10 +4,11 @@ import Preloader from './components/common/preloader/preloader';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Footer from './components/Footer/Footer';
 import { Redirect, Route, withRouter } from 'react-router';
-import { initApp } from './redux/appReducer'
+import { initApp, showErrorThunk } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withSuspense } from './hoc/WithSuspense';
+import Notification from './components/common/notification/notification';
 
 const LoginContainer = React.lazy(() => import('./components/Login/LoginContainer'))
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'))
@@ -15,15 +16,23 @@ const UsersContainer = React.lazy(() => import('./components/Users/UsersContaine
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
 
 class App extends React.Component {
+  // catchAllUnhandledErrors = ({reason}) => {
+  //   this.props.showErrorThunk(true, reason.message)
+  // }
   componentDidMount() {
     this.props.initApp();
+    //window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors)
   }
+  // componentWillUnmount() {
+  //   window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
+  // }
   render() {
     if (!this.props.initialized) return <Preloader />
     return (
       <div className='app-wrapper'>
         <HeaderContainer />
         <div className='app-wrapper-content'>
+        {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
           <Route exact path='/'
             render={() => <Redirect to={'/profile'} />} />
           <Route path='/login'
@@ -42,10 +51,12 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  initialized: state.app.initialized
+  initialized: state.app.initialized,
+  notifyError: state.app.notifyError,
+  errorMessage: state.app.errorMessage
 })
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { initApp })
+  connect(mapStateToProps, { initApp, showErrorThunk })
 )(App)

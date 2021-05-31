@@ -1,6 +1,7 @@
 import { toggleIsFetching } from './fetchReducer';
 import { profileAPI } from '../API/api';
 import { stopSubmit } from 'redux-form';
+import { showErrorThunk } from './appReducer';
 
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET_PROFILE';
@@ -70,10 +71,14 @@ export const profileEditToggle = () => ({type: PROFILE_EDIT_TOGGLE})
 
 //THUNKS
 export const getProfile = (userid) => async (dispatch) => {
-    dispatch(toggleIsFetching(true));
-    let response = await profileAPI.getProfile(userid)
-    dispatch(setUserProfile(response.data));
-    dispatch(toggleIsFetching(false));
+    try {
+        dispatch(toggleIsFetching(true));
+        let response = await profileAPI.getProfile(userid)
+        dispatch(setUserProfile(response.data));
+        dispatch(toggleIsFetching(false));
+    } catch(error) {
+        dispatch(showErrorThunk(true, `Пользователь с id ${userid} не найден`))
+    }
 }
 export const updateProfileInfoThunk = (newProfileInfo) => async (dispatch, getState) => {
     const userid = getState().auth.id;
