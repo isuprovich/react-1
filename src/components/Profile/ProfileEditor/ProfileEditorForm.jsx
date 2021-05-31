@@ -3,11 +3,12 @@ import s from './ProfileEditor.module.css'
 import { reduxForm } from 'redux-form';
 import { createField, Input } from '../../common/FormsControls/FormsControls';
 
-const ProfileEditorForm = (props) => {
-    return <form onSubmit={props.handleSubmit}>
+const ProfileEditorForm = ({ handleSubmit, error, profile }) => {
+    return <form onSubmit={handleSubmit}>
         <h2>Редактирование профиля</h2>
+        {error && <div className={s.commonError}>{error}</div>}
         <div className={s.wrapper}>
-            <div classname={s.gridDesc}>Полное имя:</div>
+            <div>Полное имя:</div>
             {createField("fullName", "text", "Полное имя", [], Input)}
             <div>Ищу работу:</div>
             {createField("lookingForAJob", "checkbox", "lookingForAJob", [], Input, [], <div>Ищу работу</div>)}
@@ -15,23 +16,13 @@ const ProfileEditorForm = (props) => {
             {createField("lookingForAJobDescription", "text", "Описание поиска работы", [], Input)}
             <div>Обо мне:</div>
             {createField("aboutMe", "text", "Обо мне", [], Input)}
-            <div>ВК:</div>
-            {createField("contacts.vk", "text", "ВК", [], Input)}
-            <div>Instagram:</div>
-            {createField("contacts.instagram", "text", "Instagram", [], Input)}
-            <div>Github:</div>
-            {createField("contacts.github", "text", "Github", [], Input)}
-            <div>Facebook:</div>
-            {createField("contacts.facebook", "text", "Facebook", [], Input)}
-            <div>Twitter:</div>
-            {createField("contacts.twitter", "text", "Twitter", [], Input)}
-            <div>Сайт:</div>
-            {createField("contacts.website", "text", "Сайт", [], Input)}
-            <div>Youtube:</div>
-            {createField("contacts.youtube", "text", "Youtube", [], Input)}
-            <div>Ссылка:</div>
-            {createField("contacts.mainLink", "text", "Главная ссылка", [], Input)}
         </div>
+        {Object.keys(profile.contacts).map(key => {
+            return <div key={key}>
+                <div>{key}:</div>
+                {createField("contacts." + key, "text", key, [], Input)}
+            </div>
+        })}
         <button className={s.updInfoBtn}>Сохранить изменения</button>
     </form>
 }

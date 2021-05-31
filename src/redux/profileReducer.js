@@ -1,5 +1,6 @@
 import { toggleIsFetching } from './fetchReducer';
 import { profileAPI } from '../API/api';
+import { stopSubmit } from 'redux-form';
 
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET_PROFILE';
@@ -79,6 +80,10 @@ export const updateProfileInfoThunk = (newProfileInfo) => async (dispatch, getSt
     const response = await profileAPI.updateProfileInfo(newProfileInfo)
     if (response.data.resultCode === 0) {
         dispatch(getProfile(userid))
+        dispatch(profileEditToggle())
+    } else {
+        let message = response.data.messages.length > 0 ? response.data.messages[0] : "ОШИБКА"
+        dispatch(stopSubmit('profile-edit', { _error: message }))
     }
 }
 export const getStatus = (userid) => async (dispatch) => {

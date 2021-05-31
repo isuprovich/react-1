@@ -3,7 +3,7 @@ import './App.css';
 import Preloader from './components/common/preloader/preloader';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Footer from './components/Footer/Footer';
-import { Route, withRouter } from 'react-router';
+import { Redirect, Route, withRouter } from 'react-router';
 import { initApp } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -24,6 +24,8 @@ class App extends React.Component {
       <div className='app-wrapper'>
         <HeaderContainer />
         <div className='app-wrapper-content'>
+          <Route exact path='/'
+            render={() => <Redirect to={'/profile'} />} />
           <Route path='/login'
             render={withSuspense(LoginContainer)} />
           <Route path='/profile/:userid?'

@@ -12,7 +12,7 @@ const ProfileInfo = ({ profile, myId, profileEditToggle }) => {
             <div>Описание: {profile.lookingForAJobDescription}</div>
             <div>Обо мне: {profile.aboutMe}</div>
             {Object.keys(profile.contacts).map(key => {
-                return <div className={s.refWrapper}><span>{key}:</span> <a className={s.ref} href={profile.contacts[key]} target="_blank" rel="noreferrer">{profile.contacts[key]}</a></div>
+                return <div key={key} className={s.refWrapper}><span>{key}:</span> <a className={s.ref} href={profile.contacts[key]} target="_blank" rel="noreferrer">{profile.contacts[key]}</a></div>
             })}
         </div>
     );

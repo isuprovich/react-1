@@ -9,7 +9,6 @@ import Preloader from '../common/preloader/preloader';
 const Profile = (props) => {
     const onSubmit = (formData) => {
         props.updateProfileInfoThunk(formData)
-        props.profileEditToggle()
     }
     if (props.profile != null) return (
         <div className={s.profile}>
