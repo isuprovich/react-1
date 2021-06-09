@@ -2,6 +2,7 @@ import { toggleIsFetching } from './fetchReducer';
 import { profileAPI } from '../API/api';
 import { stopSubmit } from 'redux-form';
 import { showErrorThunk } from './appReducer';
+import { PhotosType, PostsType, ProfileType } from '../types/types';
 
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET_PROFILE';
@@ -10,15 +11,16 @@ const PROFILE_EDIT_TOGGLE = 'PROFILE_EDIT_TOGGLE'
 const UPDATE_AVA_SUCCESS = 'UPDATE_AVA_SUCCESS';
 
 let initialState = {
-    profile: null,
-    status: '',
-    profileEditMode: false,
+    profile: null as ProfileType | null,
+    status: '' as string,
+    profileEditMode: false as boolean,
     posts: [
         { id: 1, user: 'Admin', message: 'https://youtu.be/_X3dVadZp2U?t=406' }
-    ]
-};
+    ] as Array<PostsType>
+}
+type InitialStateType = typeof initialState
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case ADD_POST: {
             return {
@@ -49,7 +51,7 @@ const profileReducer = (state = initialState, action) => {
                 profile: {
                     ...state.profile,
                     photos: { ...action.photos }
-                }
+                } as ProfileType
             }
         case PROFILE_EDIT_TOGGLE:
             let newMode = !state.profileEditMode
@@ -63,14 +65,33 @@ const profileReducer = (state = initialState, action) => {
 };
 
 //ACTION-CREATORS
-export const addPost = (newPostText) => ({ type: ADD_POST, newPostText });
-export const setUserProfile = (profile) => ({ type: SET_PROFILE, profile });
-export const setUserStatus = (status) => ({ type: SET_STATUS, status });
-export const updateAvaSuccess = (photos) => ({ type: UPDATE_AVA_SUCCESS, photos })
-export const profileEditToggle = () => ({type: PROFILE_EDIT_TOGGLE})
+type AddPostType = {
+    type: typeof ADD_POST,
+    newPostText: string
+}
+type SetUserProfileType = {
+    type: typeof SET_PROFILE,
+    profile: ProfileType
+}
+type SetUserStatusType = {
+    type: typeof SET_STATUS,
+    status: string
+}
+type UpdateAvaSuccessType = {
+    type: typeof UPDATE_AVA_SUCCESS,
+    photos: PhotosType
+}
+type ProfileEditToggleType = {
+    type: typeof PROFILE_EDIT_TOGGLE
+}
+export const addPost = (newPostText: string): AddPostType => ({ type: ADD_POST, newPostText });
+export const setUserProfile = (profile: ProfileType): SetUserProfileType => ({ type: SET_PROFILE, profile });
+export const setUserStatus = (status: string): SetUserStatusType => ({ type: SET_STATUS, status });
+export const updateAvaSuccess = (photos: PhotosType): UpdateAvaSuccessType => ({ type: UPDATE_AVA_SUCCESS, photos })
+export const profileEditToggle = (): ProfileEditToggleType => ({type: PROFILE_EDIT_TOGGLE})
 
 //THUNKS
-export const getProfile = (userid) => async (dispatch) => {
+export const getProfile = (userid: number) => async (dispatch: any) => {
     try {
         dispatch(toggleIsFetching(true));
         let response = await profileAPI.getProfile(userid)
@@ -80,7 +101,7 @@ export const getProfile = (userid) => async (dispatch) => {
         dispatch(showErrorThunk(true, `Пользователь с id ${userid} не найден`))
     }
 }
-export const updateProfileInfoThunk = (newProfileInfo) => async (dispatch, getState) => {
+export const updateProfileInfoThunk = (newProfileInfo: any) => async (dispatch: any, getState: any) => {
     const userid = getState().auth.id;
     const response = await profileAPI.updateProfileInfo(newProfileInfo)
     if (response.data.resultCode === 0) {
@@ -91,17 +112,17 @@ export const updateProfileInfoThunk = (newProfileInfo) => async (dispatch, getSt
         dispatch(stopSubmit('profile-edit', { _error: message }))
     }
 }
-export const getStatus = (userid) => async (dispatch) => {
+export const getStatus = (userid: number) => async (dispatch: any) => {
     let response = await profileAPI.getProfileStatus(userid)
     dispatch(setUserStatus(response.data));
 }
-export const updateStatus = (status) => async (dispatch) => {
+export const updateStatus = (status: string) => async (dispatch: any) => {
     let response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setUserStatus(status));
     }
 }
-export const saveAva = (file) => async (dispatch) => {
+export const saveAva = (file: any) => async (dispatch: any) => {
     let response = await profileAPI.uploadAva(file)
     if (response.data.resultCode === 0) {
         dispatch(updateAvaSuccess(response.data.data.photos))
