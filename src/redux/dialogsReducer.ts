@@ -6,7 +6,7 @@ type DialogType = {
 }
 type MessageType = {
     id: number,
-    message: string
+    message: string | null
 }
 let initialState = {
     dialogsData: [
@@ -21,7 +21,7 @@ let initialState = {
 }
 type InitialStateType = typeof initialState
 
-const dialogsReducer = (state = initialState, action: any): InitialStateType => {
+const dialogsReducer = (state = initialState, action: SendMessageType): InitialStateType => {
     switch (action.type) {
         case SEND_MESSAGE:
             return {

@@ -1,8 +1,10 @@
-import { toggleIsFetching } from './fetchReducer';
+import { toggleIsFetching, ToggleIsFetchingType } from './fetchReducer';
 import { profileAPI } from '../API/api';
 import { stopSubmit } from 'redux-form';
 import { showErrorThunk } from './appReducer';
 import { PhotosType, PostsType, ProfileType } from '../types/types';
+import { ThunkAction } from 'redux-thunk';
+import { AppStateType } from './reduxStore';
 
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET_PROFILE';
@@ -20,7 +22,7 @@ let initialState = {
 }
 type InitialStateType = typeof initialState
 
-const profileReducer = (state = initialState, action: any): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case ADD_POST: {
             return {
@@ -65,6 +67,8 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
 };
 
 //ACTION-CREATORS
+type ActionTypes = AddPostType | SetUserProfileType | SetUserStatusType | UpdateAvaSuccessType | ProfileEditToggleType | ToggleIsFetchingType
+
 type AddPostType = {
     type: typeof ADD_POST,
     newPostText: string
@@ -91,7 +95,9 @@ export const updateAvaSuccess = (photos: PhotosType): UpdateAvaSuccessType => ({
 export const profileEditToggle = (): ProfileEditToggleType => ({type: PROFILE_EDIT_TOGGLE})
 
 //THUNKS
-export const getProfile = (userid: number) => async (dispatch: any) => {
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
+export const getProfile = (userid: number | null): ThunkType => async (dispatch) => {
     try {
         dispatch(toggleIsFetching(true));
         let response = await profileAPI.getProfile(userid)
@@ -101,7 +107,7 @@ export const getProfile = (userid: number) => async (dispatch: any) => {
         dispatch(showErrorThunk(true, `Пользователь с id ${userid} не найден`))
     }
 }
-export const updateProfileInfoThunk = (newProfileInfo: any) => async (dispatch: any, getState: any) => {
+export const updateProfileInfoThunk = (newProfileInfo: any): ThunkType => async (dispatch, getState) => {
     const userid = getState().auth.id;
     const response = await profileAPI.updateProfileInfo(newProfileInfo)
     if (response.data.resultCode === 0) {
@@ -112,17 +118,17 @@ export const updateProfileInfoThunk = (newProfileInfo: any) => async (dispatch: 
         dispatch(stopSubmit('profile-edit', { _error: message }))
     }
 }
-export const getStatus = (userid: number) => async (dispatch: any) => {
+export const getStatus = (userid: number): ThunkType => async (dispatch) => {
     let response = await profileAPI.getProfileStatus(userid)
     dispatch(setUserStatus(response.data));
 }
-export const updateStatus = (status: string) => async (dispatch: any) => {
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
     let response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setUserStatus(status));
     }
 }
-export const saveAva = (file: any) => async (dispatch: any) => {
+export const saveAva = (file: any): ThunkType => async (dispatch) => {
     let response = await profileAPI.uploadAva(file)
     if (response.data.resultCode === 0) {
         dispatch(updateAvaSuccess(response.data.data.photos))

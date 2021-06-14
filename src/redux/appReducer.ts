@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { getAuthUserData } from './authReducer';
 
 const INIT_SUCCESS = 'INIT_SUCCESS';
@@ -10,7 +11,7 @@ let initialState = {
 };
 type InitialStateType = typeof initialState
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case INIT_SUCCESS:
             return {
@@ -30,19 +31,26 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
 
 //ACTION-CREATORS
 type InitSuccessActionType = { type: typeof INIT_SUCCESS }
+type ErrorActionType = {
+    type: typeof ERROR
+    notifyError: boolean,
+    errorMessage: string | null
+}
+type ActionTypes = InitSuccessActionType | ErrorActionType
 export const initSuccess = (): InitSuccessActionType => ({ type: INIT_SUCCESS });
-export const showError = (notifyError: any, errorMessage: any) => ({ type: ERROR, notifyError, errorMessage })
+export const showError = (notifyError: boolean, errorMessage: string): ErrorActionType => ({ type: ERROR, notifyError, errorMessage })
 
 //THUNKS
-export const initApp = () => (dispatch: any) => {
+
+export const initApp = () => (dispatch: Dispatch<ActionTypes | any>) => {
     let promise = dispatch(getAuthUserData());
     Promise.all([promise]).then(() => {
         dispatch(initSuccess());
     });
 }
-export const showErrorThunk = (notifyError: any, errorMessage: any) => (dispatch: any) => {
+export const showErrorThunk = (notifyError: boolean, errorMessage: string) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch(showError(notifyError, errorMessage))
-    setTimeout(() => { dispatch(showError(false, null)) }, 10000)
+    setTimeout(() => { dispatch(showError(false, '')) }, 10000)
 }
 
 export default appReducer;

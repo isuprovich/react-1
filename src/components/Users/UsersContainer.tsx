@@ -1,15 +1,34 @@
 import { connect } from 'react-redux';
-import { requestUsers, follow, setCurrentPage, unfollow } from '../../redux/usersReducer';
+import { requestUsers, follow, unfollow } from '../../redux/usersReducer';
 import { getPageSize, getUsers, getTotalUsersCount, getCurrentPage, getFollowingInProgress } from '../../redux/usersSelectors';
 import React from 'react';
 import Users from './Users';
 import UsersPagination from './UsersPagination';
+import { UsersType } from '../../types/types';
+import { AppStateType } from '../../redux/reduxStore';
 
-class UsersContainer extends React.Component {
+type MSTPType = {
+    currentPage: number,
+    pageSize: number,
+    totalUsersCount: number,
+    users: Array<UsersType>,
+    followingInProgress: Array<number>
+}
+type MDTPType = {
+    requestUsers: (pageNumber: number, pageSize: number) => void,
+    follow: (userId: number) => void,
+    unfollow: (userId: number) => void,
+}
+type OwnPropsType = {
+
+}
+type PropsType = MSTPType & MDTPType & OwnPropsType
+
+class UsersContainer extends React.Component<PropsType> {
     componentDidMount() {
         this.props.requestUsers(this.props.currentPage, this.props.pageSize);
     }
-    onPageChange = (pageNumber) => {
+    onPageChange = (pageNumber: number) => {
         this.props.requestUsers(pageNumber, this.props.pageSize);
     }
     render() {
@@ -28,7 +47,7 @@ class UsersContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MSTPType => {
     return {
         users: getUsers(state),
         pageSize: getPageSize(state),
@@ -38,4 +57,4 @@ let mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { follow, unfollow, setCurrentPage, requestUsers })(UsersContainer)
+export default connect<MSTPType, MDTPType, OwnPropsType, AppStateType>(mapStateToProps, { follow, unfollow, requestUsers })(UsersContainer)

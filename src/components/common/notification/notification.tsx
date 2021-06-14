@@ -1,6 +1,10 @@
 import s from './notification.module.css'
 
-let Notification = ({errorMessage}) => {
+type PropsType = {
+    errorMessage: string
+}
+
+let Notification: React.FC<PropsType> = ({errorMessage}) => {
     return <div className={s.Wrapper}>
         {errorMessage}
     </div>

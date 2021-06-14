@@ -1,6 +1,6 @@
 import s from './preloader.module.css'
 
-let Preloader = (props) => {
+let Preloader = () => {
     return <div className={s.rollerWrapper}>
         <div className={s.ldsRoller}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         <div className={s.loadText}>Загрузка</div>

@@ -2,11 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import s from './Header.module.css';
 
-const Header = (props) => {
+type HeaderType = {
+    isAuth: boolean,
+    myId: number | null,
+    myLogin: string | null
+    logout: () => void
+}
+
+const Header: React.FC<HeaderType> = ({isAuth, myId, myLogin, logout}) => {
     return (
         <header className={s.header}>
             <div>
-                {props.isAuth
+                {isAuth
                     ? <div>
                         <nav className={s.nav}>
                             <div className={s.item}>
@@ -18,10 +25,10 @@ const Header = (props) => {
                         </nav>
                         <div className={s.loginWrapper}>
                             <div className={s.item}>
-                                <NavLink to={`/profile/${props.myId}`} className={s.navlink} activeClassName={s.active}>{props.myLogin}</NavLink>
+                                <NavLink to={`/profile/${myId}`} className={s.navlink} activeClassName={s.active}>{myLogin}</NavLink>
                             </div>
                             <div className={s.item}>
-                                <NavLink to='/login' className={s.navlink} onClick={props.logout}>Выход</NavLink>
+                                <NavLink to='/login' className={s.navlink} onClick={logout}>Выход</NavLink>
                             </div>
                         </div>
                     </div>

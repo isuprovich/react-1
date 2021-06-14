@@ -5,7 +5,7 @@ let initialState = {
 }
 type InitialStateType = typeof initialState
 
-const fetchReducer = (state = initialState, action: any): InitialStateType => {
+const fetchReducer = (state = initialState, action: ToggleIsFetchingType): InitialStateType => {
     switch (action.type) {
         case TOGGLE_IS_FETCHING:
             return {
@@ -17,7 +17,7 @@ const fetchReducer = (state = initialState, action: any): InitialStateType => {
     };
 };
 
-type ToggleIsFetchingType = {
+export type ToggleIsFetchingType = {
     type: typeof TOGGLE_IS_FETCHING,
     isFetching: boolean
 }
