@@ -23,7 +23,7 @@ export const usersAPI = {
 }
 
 export const profileAPI = {
-    getProfile(userid: number) {
+    getProfile(userid: number | null) {
         return axiosInstance.get(`profile/${userid}`)
     },
     getProfileStatus(userid: number) {
