@@ -12,7 +12,7 @@ let initialState = {
     email: null as string | null,
     login: null as string | null,
     isAuth: false as boolean,
-    captchaUrl: null as string | null,
+    captchaUrl: undefined as string | undefined,
     needCaptcha: false as boolean
 }
 type InitialStateType = typeof initialState
@@ -66,7 +66,7 @@ export const toggleCaptcha = (needCaptcha: boolean): ToggleCaptchaType => ({ typ
 //=================================GetCaptchaUrl==================================//
 type GetCaptchaUrlType = {
     type: typeof SET_CAPTCHA_URL,
-    captchaUrl: string | null
+    captchaUrl: string | undefined
 }
 export const getCaptchaUrl = (captchaUrl: string): GetCaptchaUrlType => ({ type: SET_CAPTCHA_URL, captchaUrl });
 
@@ -103,7 +103,7 @@ export const logout = (): ThunkType => async (dispatch) => {
     }
 }
 
-export const getCaptcha = (): ThunkType => async (dispatch) => {
+export const getCaptcha = () => async (dispatch: any) => {
     let data = await authAPI.captcha()
     dispatch(getCaptchaUrl(data.url))
 }
