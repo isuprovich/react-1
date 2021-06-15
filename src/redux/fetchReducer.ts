@@ -1,13 +1,12 @@
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-
+import { InferActionsTypes } from './reduxStore';
 let initialState = {
     isFetching: true as boolean
 }
 type InitialStateType = typeof initialState
 
-const fetchReducer = (state = initialState, action: ToggleIsFetchingType): InitialStateType => {
+const fetchReducer = (state = initialState, action: FetchActionTypes): InitialStateType => {
     switch (action.type) {
-        case TOGGLE_IS_FETCHING:
+        case 'TOGGLE_IS_FETCHING':
             return {
                 ...state,
                 isFetching: action.isFetching
@@ -17,10 +16,10 @@ const fetchReducer = (state = initialState, action: ToggleIsFetchingType): Initi
     };
 };
 
-export type ToggleIsFetchingType = {
-    type: typeof TOGGLE_IS_FETCHING,
-    isFetching: boolean
+export type FetchActionTypes = InferActionsTypes<typeof fetchActions>
+
+export const fetchActions = {
+    toggleIsFetching: (isFetching: boolean) => ({ type: 'TOGGLE_IS_FETCHING', isFetching })
 }
-export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingType => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 export default fetchReducer;
