@@ -1,5 +1,5 @@
 import { UsersType } from './../types/types';
-import { usersAPI } from '../API/api';
+import { usersAPI } from '../API/usersAPI';
 import { updateObjectInArray } from '../utils/objectHelpers/objectHelpers';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
@@ -86,10 +86,10 @@ const _followUnfollowFlow = async (
     dispatch(usersActions.toggleFollowingProgress(false, userId))
 }
 export const follow = (userId: number): ThunkType => async (dispatch) => {
-    _followUnfollowFlow(dispatch, userId, usersAPI.followUser.bind(usersAPI), usersActions.followSuccess)
+    _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), usersActions.followSuccess)
 }
 export const unfollow = (userId: number): ThunkType => async (dispatch) => {
-    _followUnfollowFlow(dispatch, userId, usersAPI.unfollowUser.bind(usersAPI), usersActions.unfollowSuccess)
+    _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), usersActions.unfollowSuccess)
 }
 
 export default usersReducer;

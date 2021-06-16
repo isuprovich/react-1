@@ -1,4 +1,4 @@
-import { profileAPI } from '../API/api';
+import { profileAPI } from '../API/profileAPI';
 import { stopSubmit } from 'redux-form';
 import { showErrorThunk } from './appReducer';
 import { PhotosType, PostsType, ProfileType } from '../types/types';
@@ -77,7 +77,7 @@ export const getProfile = (userid: number | null): ThunkType => async (dispatch)
     try {
         dispatch(fetchActions.toggleIsFetching(true));
         let response = await profileAPI.getProfile(userid)
-        dispatch(profileActions.setUserProfile(response.data));
+        dispatch(profileActions.setUserProfile(response));
         dispatch(fetchActions.toggleIsFetching(false));
     } catch(error) {
         dispatch(showErrorThunk(true, `Пользователь с id ${userid} не найден`))

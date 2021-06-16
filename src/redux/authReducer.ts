@@ -1,6 +1,7 @@
 import { stopSubmit } from 'redux-form';
 import { ThunkAction } from 'redux-thunk';
-import { authAPI, ResultCodeCaptchaEnum, ResultCodeEnum } from '../API/api';
+import { ResultCodeCaptchaEnum, ResultCodeEnum } from '../API/api';
+import { authAPI } from '../API/authAPI';
 import { AppStateType, InferActionsTypes } from './reduxStore';
 
 let initialState = {
