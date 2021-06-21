@@ -1,4 +1,4 @@
-import { UsersType } from './../types/types';
+import { UsersType } from '../types/types';
 import { usersAPI } from '../API/usersAPI';
 import { updateObjectInArray } from '../utils/objectHelpers/objectHelpers';
 import { Dispatch } from 'redux';
@@ -11,8 +11,8 @@ let initialState = {
     totalUsersCount: 0 as number,
     currentPage: 1 as number,
     followingInProgress: [] as Array<number> // array of userId
-};
-type InitialStateType = typeof initialState
+}
+export type InitialStateType = typeof initialState
 
 const usersReducer = (state = initialState, action: UsersActionTypes): InitialStateType => {
     switch (action.type) {
