@@ -19,10 +19,8 @@ type MDTPType = {
     follow: (userId: number) => void,
     unfollow: (userId: number) => void,
 }
-type OwnPropsType = {
 
-}
-type PropsType = MSTPType & MDTPType & OwnPropsType
+type PropsType = MSTPType & MDTPType
 
 class UsersContainer extends React.Component<PropsType> {
     componentDidMount() {
@@ -57,4 +55,4 @@ let mapStateToProps = (state: AppStateType): MSTPType => {
     }
 }
 
-export default connect<MSTPType, MDTPType, OwnPropsType, AppStateType>(mapStateToProps, { follow, unfollow, requestUsers })(UsersContainer)
+export default connect<MSTPType, MDTPType, {}, AppStateType>(mapStateToProps, { follow, unfollow, requestUsers })(UsersContainer)

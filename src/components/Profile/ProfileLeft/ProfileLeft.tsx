@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import s from './ProfileLeft.module.css';
 import StatusWithHooks from './Status/StatusWithHooks';
 import avaPlaceholder from '../../../assets/avatar_placeholder.png'
+import { ProfileType } from '../../../types/types';
 
-const ProfileLeft = ({profile, myId, status, updateStatus, saveAva}) => {
+type ProfileLeftType = {
+    profile: ProfileType,
+    myId: number | null,
+    status: string,
+    updateStatus: () => void,
+    saveAva: (file: File) => void
+}
 
-    const avaNewSelected = (e) => {
-        if (e.target.files.length) {
+const ProfileLeft: React.FC<ProfileLeftType> = ({profile, myId, status, updateStatus, saveAva}) => {
+
+    const avaNewSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length) {
             saveAva(e.target.files[0])
         }
     }

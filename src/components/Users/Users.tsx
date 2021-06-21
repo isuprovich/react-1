@@ -6,8 +6,8 @@ import s from './Users.module.css';
 type PropsType = {
     users: Array<UsersType>,
     followingInProgress: Array<number>,
-    follow: (usersId: number) => void,
-    unfollow: (usersId: number) => void
+    follow: (id: number) => void,
+    unfollow: (id: number) => void
 }
 
 let Users: React.FC<PropsType> = ({users, followingInProgress, follow, unfollow}) => {

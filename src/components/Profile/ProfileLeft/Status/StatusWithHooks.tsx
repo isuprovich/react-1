@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import s from './Status.module.css';
 
-const StatusWithHooks = (props) => {
+type PropsType = {
+    status: string,
+    updateStatus: (status: string) => void
+}
+
+const StatusWithHooks: React.FC<PropsType> = (props) => {
 
     let [editMode, setEditMode] = useState(false)
     let [status, setStatus] = useState(props.status)
@@ -17,7 +22,7 @@ const StatusWithHooks = (props) => {
         setEditMode(false);
         props.updateStatus(status)
     }
-    const onStatusChange = (e) => {
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value)
     }
 

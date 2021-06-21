@@ -1,9 +1,9 @@
 import { InferActionsTypes } from './reduxStore';
-type DialogType = {
+export type DialogType = {
     id: number,
     name: string
 }
-type MessageType = {
+export type MessageType = {
     id: number,
     message: string | null
 }
@@ -18,7 +18,7 @@ let initialState = {
         {id: 1, message: 'https://youtu.be/MM02LsZqssQ?t=1056'}
     ] as Array<MessageType>
 }
-type InitialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
 const dialogsReducer = (state = initialState, action: DialogsActionTypes): InitialStateType => {
     switch (action.type) {

@@ -5,12 +5,12 @@ export const usersAPI = {
         return axiosInstance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}`)
             .then(res => res.data)
     },
-    follow(userid: number) {
-        return axiosInstance.post<ResponseType>(`follow/${userid}`)
+    follow(userId: number) {
+        return axiosInstance.post<ResponseType>(`follow/${userId}`)
             .then(res => res.data)
     },
-    unfollow(userid: number) {
-        return axiosInstance.delete<ResponseType>(`follow/${userid}`)
+    unfollow(userId: number) {
+        return axiosInstance.delete<ResponseType>(`follow/${userId}`)
             .then(res => res.data)
     }
 }

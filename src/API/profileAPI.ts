@@ -1,24 +1,28 @@
-import { ProfileType } from '../types/types';
-import { axiosInstance } from './api';
+import { PhotosType, ProfileType } from '../types/types';
+import { axiosInstance, ResponseType } from './api';
+
+type SavePhotoResponseDataType = {
+    photos: PhotosType
+}
 
 export const profileAPI = {
-    getProfile(userid: number | null) {
-        return axiosInstance.get<ProfileType>(`profile/${userid}`).then(res => res.data)
+    getProfile(userId: number | null) {
+        return axiosInstance.get<ProfileType>(`profile/${userId}`).then(res => res.data)
     },
-    getProfileStatus(userid: number) {
-        return axiosInstance.get(`profile/status/${userid}`)
+    getProfileStatus(userId: number | null) {
+        return axiosInstance.get<string>(`profile/status/${userId}`).then(res => res.data)
     },
     updateStatus(status: string) {
-        return axiosInstance.put(`profile/status`, { status })
+        return axiosInstance.put<ResponseType>(`profile/status`, { status }).then(res => res.data)
     },
     updateProfileInfo(newProfileData: ProfileType) {
-        return axiosInstance.put(`profile`, newProfileData)
+        return axiosInstance.put<ResponseType>(`profile`, newProfileData).then(res => res.data)
     },
-    uploadAva(file: any) {
+    uploadAva(file: File) {
         const formData = new FormData();
         formData.append("image", file)
-        return axiosInstance.put(`profile/photo`, formData, {
+        return axiosInstance.put<ResponseType<SavePhotoResponseDataType>>(`profile/photo`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        }).then(res => res.data)
     }
 }

@@ -7,6 +7,7 @@ import { AppStateType, InferActionsTypes } from './reduxStore';
 import { fetchActions, FetchActionTypes } from './fetchReducer';
 
 let initialState = {
+    newPostText: '' as string,
     profile: null as ProfileType | null,
     status: '' as string,
     profileEditMode: false as boolean,
@@ -67,47 +68,47 @@ export const profileActions = {
     setUserProfile: (profile: ProfileType) => ({ type: 'SET_PROFILE', profile } as const),
     setUserStatus: (status: string) => ({ type: 'SET_STATUS', status } as const),
     updateAvaSuccess: (photos: PhotosType) => ({ type: 'UPDATE_AVA_SUCCESS', photos } as const),
-    profileEditToggle: () => ({type: 'PROFILE_EDIT_TOGGLE'} as const)
+    profileEditToggle: () => ({ type: 'PROFILE_EDIT_TOGGLE' } as const)
 }
 
 //THUNKS
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes | FetchActionTypes>
 
-export const getProfile = (userid: number | null): ThunkType => async (dispatch) => {
+export const getProfile = (userId: number | null): ThunkType => async (dispatch) => {
     try {
         dispatch(fetchActions.toggleIsFetching(true));
-        let response = await profileAPI.getProfile(userid)
+        let response = await profileAPI.getProfile(userId)
         dispatch(profileActions.setUserProfile(response));
         dispatch(fetchActions.toggleIsFetching(false));
-    } catch(error) {
-        dispatch(showErrorThunk(true, `Пользователь с id ${userid} не найден`))
+    } catch (error) {
+        dispatch(showErrorThunk(true, `Пользователь с id ${userId} не найден`))
     }
 }
-export const updateProfileInfoThunk = (newProfileInfo: any): ThunkType => async (dispatch, getState) => {
-    const userid = getState().auth.id;
-    const response = await profileAPI.updateProfileInfo(newProfileInfo)
-    if (response.data.resultCode === 0) {
-        dispatch(getProfile(userid))
+export const updateProfileInfoThunk = (newProfileInfo: ProfileType): ThunkType => async (dispatch, getState) => {
+    const userId = getState().auth.id;
+    const data = await profileAPI.updateProfileInfo(newProfileInfo)
+    if (data.resultCode === 0) {
+        dispatch(getProfile(userId))
         dispatch(profileActions.profileEditToggle())
     } else {
-        let message = response.data.messages.length > 0 ? response.data.messages[0] : "ОШИБКА"
+        let message = data.messages.length > 0 ? data.messages[0] : "ОШИБКА"
         dispatch(stopSubmit('profile-edit', { _error: message }))
     }
 }
-export const getStatus = (userid: number): ThunkType => async (dispatch) => {
-    let response = await profileAPI.getProfileStatus(userid)
-    dispatch(profileActions.setUserStatus(response.data));
+export const getStatus = (userId: number | null): ThunkType => async (dispatch) => {
+    let data = await profileAPI.getProfileStatus(userId)
+    dispatch(profileActions.setUserStatus(data));
 }
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
-    let response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
+    let data = await profileAPI.updateStatus(status)
+    if (data.resultCode === 0) {
         dispatch(profileActions.setUserStatus(status));
     }
 }
-export const saveAva = (file: any): ThunkType => async (dispatch) => {
-    let response = await profileAPI.uploadAva(file)
-    if (response.data.resultCode === 0) {
-        dispatch(profileActions.updateAvaSuccess(response.data.data.photos))
+export const saveAva = (file: File): ThunkType => async (dispatch) => {
+    let data = await profileAPI.uploadAva(file)
+    if (data.resultCode === 0) {
+        dispatch(profileActions.updateAvaSuccess(data.data.photos))
     }
 }
 
