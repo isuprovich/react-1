@@ -7,10 +7,11 @@ type PropsType = {
     users: Array<UsersType>,
     followingInProgress: Array<number>,
     follow: (id: number) => void,
-    unfollow: (id: number) => void
+    unfollow: (id: number) => void,
+    myId: number | null
 }
 
-let Users: React.FC<PropsType> = ({users, followingInProgress, follow, unfollow}) => {
+const Users: React.FC<PropsType> = ({users, followingInProgress, follow, unfollow, myId}) => {
     return <div>
         <div className={s.wrapper}>
             {users.map(u =>
@@ -20,6 +21,7 @@ let Users: React.FC<PropsType> = ({users, followingInProgress, follow, unfollow}
                     followingInProgress={followingInProgress}
                     follow={follow}
                     unfollow={unfollow}
+                    myId={myId}
                 />
             )}
         </div>

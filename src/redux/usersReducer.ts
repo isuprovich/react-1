@@ -12,9 +12,11 @@ let initialState = {
     pageSize: 13 as number,
     totalUsersCount: 0 as number,
     currentPage: 1 as number,
-    followingInProgress: [] as Array<number> // array of userId
+    followingInProgress: [] as Array<number>, // array of userId
+    filter: { term: '' }
 }
 export type InitialStateType = typeof initialState
+export type FilterType = typeof initialState.filter
 
 const usersReducer = (state = initialState, action: UsersActionTypes): InitialStateType => {
     switch (action.type) {
@@ -51,6 +53,11 @@ const usersReducer = (state = initialState, action: UsersActionTypes): InitialSt
                 ...state,
                 totalUsersCount: action.totalUsersCount
             }
+        case 'SET_FILTER':
+            return {
+                ...state,
+                filter: action.payload
+            }
         default:
             return state;
     }
@@ -63,16 +70,18 @@ export const usersActions = {
     unfollowSuccess: (userId: number) => ({ type: 'UNFOLLOW', userId } as const),
     setUsers: (users: Array<UsersType>) => ({ type: 'SET_USERS', users } as const),
     setCurrentPage: (currentPage: number) => ({ type: 'SET_CURRENT_PAGE', currentPage } as const),
+    setFilter: (term: string) => ({ type: 'SET_FILTER', payload: { term } } as const),
     setTotalUsersCount: (totalUsersCount: number) => ({ type: 'SET_TOTAL_USERS_COUNT', totalUsersCount } as const),
     toggleFollowingProgress: (followingInProgress: boolean, userId: number) => ({ type: 'TOGGLE_IS_FOLLOWING_PROGRESS', followingInProgress, userId } as const)
 }
 //THUNKS
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, UsersActionTypes | FetchActionTypes>
 
-export const requestUsers = (currentPage: number, pageSize: number): ThunkType => async (dispatch) => {
-    dispatch(usersActions.setCurrentPage(currentPage));
+export const requestUsers = (currentPage: number, pageSize: number, term: string): ThunkType => async (dispatch) => {
     dispatch(fetchActions.toggleIsFetching(true))
-    let data = await usersAPI.getUsers(currentPage, pageSize)
+    dispatch(usersActions.setCurrentPage(currentPage));
+    dispatch(usersActions.setFilter(term))
+    let data = await usersAPI.getUsers(currentPage, pageSize, term)
     if (data.error === null) {
         dispatch(usersActions.setUsers(data.items));
         dispatch(usersActions.setTotalUsersCount(data.totalCount))

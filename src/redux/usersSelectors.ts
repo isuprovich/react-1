@@ -20,3 +20,6 @@ export const getCurrentPage = (state: AppStateType) => {
 export const getFollowingInProgress = (state: AppStateType) => {
     return state.usersPage.followingInProgress
 }
+export const getUsersSearchFilter = (state: AppStateType) => {
+    return state.usersPage.filter
+}

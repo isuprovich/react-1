@@ -1,13 +1,13 @@
 import s from './Users.module.css';
 
 type PropsType = {
-    totalUsersCount: number, 
-    pageSize: number, 
-    currentPage: number, 
-    onPageChange: (p: number) => void
+    totalUsersCount: number,
+    pageSize: number,
+    currentPage: number,
+    onPageChange: (pageNumber: number) => void
 }
 
-let UsersPagination: React.FC<PropsType> = ({totalUsersCount, pageSize, currentPage, onPageChange}) => {
+const UsersPagination: React.FC<PropsType> = ({ totalUsersCount, pageSize, currentPage, onPageChange }) => {
     let pagesCount = Math.ceil(totalUsersCount / pageSize);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
