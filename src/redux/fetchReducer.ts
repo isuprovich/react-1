@@ -1,6 +1,6 @@
 import { InferActionsTypes } from './reduxStore';
 let initialState = {
-    isFetching: true as boolean
+    isFetching: false as boolean
 }
 type InitialStateType = typeof initialState
 

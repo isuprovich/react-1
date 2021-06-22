@@ -19,7 +19,8 @@ const DialogsContainer = withSuspense(React.lazy(() => import('./components/Dial
 type MSTPType = {
   initialized: boolean,
   notifyError: any,
-  errorMessage: string
+  errorMessage: string,
+  isFetching: boolean
 }
 
 type MDTPType = {
@@ -42,6 +43,7 @@ class App extends React.Component<PropsType> {
   render() {
     if (!this.props.initialized) return <Preloader />
     return <div className='app-wrapper'>
+        {this.props.isFetching && <Preloader />}
         <HeaderContainer />
         <div className='app-wrapper-content'>
           {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
@@ -64,7 +66,8 @@ class App extends React.Component<PropsType> {
 const mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized,
   notifyError: state.app.notifyError,
-  errorMessage: state.app.errorMessage
+  errorMessage: state.app.errorMessage,
+  isFetching: state.fetchAnim.isFetching
 })
 
 export default compose<React.ComponentType>(
