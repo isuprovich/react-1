@@ -18,7 +18,7 @@ type MSTPType = {
   myId: number | null
 }
 type MDTPType = {
-  requestUsers: (pageNumber: number, pageSize: number, term: string) => void,
+  requestUsers: (pageNumber: number, pageSize: number, filter: FilterType) => void,
   follow: (userId: number) => void,
   unfollow: (userId: number) => void,
 }
@@ -27,14 +27,16 @@ type PropsType = MSTPType & MDTPType
 
 class UsersContainer extends React.Component<PropsType> {
   componentDidMount() {
-    this.props.requestUsers(this.props.currentPage, this.props.pageSize, "")
+    const { currentPage, pageSize, filter } = this.props
+    this.props.requestUsers(currentPage, pageSize, filter)
   }
   onPageChange = (pageNumber: number) => {
     const { pageSize, filter } = this.props
-    this.props.requestUsers(pageNumber, pageSize, filter.term)
+    this.props.requestUsers(pageNumber, pageSize, filter)
   }
   onFilterChange = (filter: FilterType) => {
-    this.props.requestUsers(this.props.currentPage, this.props.pageSize, filter.term)
+    const { pageSize } = this.props
+    this.props.requestUsers(1, pageSize, filter)
   }
   render() {
     return <>

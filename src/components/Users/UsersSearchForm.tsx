@@ -6,22 +6,36 @@ type UsersSearchFormTypes = {
     onFilterChange: (filter: FilterType) => void
 }
 
-export const UsersSearchForm: React.FC<UsersSearchFormTypes> = ({ onFilterChange }) => {
-    const submit = (values: FilterType, { setSubmitting }: { setSubmitting: (setSubmitting: boolean) => void }) => {
-        onFilterChange(values)
+type FormType = {
+    term: string,
+    friend: "true" | "false" | "null"
+}
+
+export const UsersSearchForm: React.FC<UsersSearchFormTypes> = React.memo(({ onFilterChange }) => {
+    const submit = (values: FormType, { setSubmitting }: { setSubmitting: (setSubmitting: boolean) => void }) => {
+        const filter: FilterType = {
+            term: values.term,
+            friend: values.friend === "null" ? null : values.friend === "true" ? true : false
+        }
+        onFilterChange(filter)
         setSubmitting(false)
     }
     return <div>
         <Formik
-            initialValues={{ term: '' }}
+            initialValues={{ term: '', friend: "null" }}
             onSubmit={submit}
         >
             {({ isSubmitting }) => (
                 <Form>
                     <Field type="text" name="term" />
+                    <Field name="friend" as="select">
+                        <option value="null">Все</option>
+                        <option value="true">Только друзья</option>
+                        <option value="false">Кроме друзей</option>
+                    </Field>
                     <button type="submit" disabled={isSubmitting}>Найти</button>
                 </Form>
             )}
         </Formik>
-    </div>;
-};
+    </div>
+})
