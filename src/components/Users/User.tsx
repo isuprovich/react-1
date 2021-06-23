@@ -5,14 +5,14 @@ import avaPlaceholder from '../../assets/avatar_placeholder.png'
 import { UsersType } from '../../types/types';
 
 type PropsType = {
-    myId: number | null
     user: UsersType,
+    myId: number | null,
     followingInProgress: Array<number>,
-    follow: (id: number) => void,
-    unfollow: (id: number) => void
+    followUser: (userId: number) => void,
+    unfollowUser: (userId: number) => void,
 }
 
-let User: React.FC<PropsType> = ({user, followingInProgress, follow, unfollow, myId}) => {
+const User: React.FC<PropsType> = React.memo(({ user, myId, followingInProgress, followUser, unfollowUser }) => {
     return <div key={user.id} className={s.userCard}>
         <img src={user.photos.small != null ? user.photos.small : avaPlaceholder} alt="User avatar" className={s.userAva100} />
         <NavLink to={'/profile/' + user.id} className={s.navLink}>{user.name}</NavLink>
@@ -22,14 +22,14 @@ let User: React.FC<PropsType> = ({user, followingInProgress, follow, unfollow, m
                 ? <button
                     disabled={followingInProgress.some(id => id === user.id)}
                     className={s.unfollowButton}
-                    onClick={() => { unfollow(user.id) }}>Отписаться</button>
+                    onClick={() => { unfollowUser(user.id) }}>Отписаться</button>
                 : <button
                     disabled={followingInProgress.some(id => id === user.id)}
                     className={s.followButton}
-                    onClick={() => { follow(user.id) }}>Подписаться</button>
+                    onClick={() => { followUser(user.id) }}>Подписаться</button>
             }
         </div>}
     </div>
-}
+})
 
 export default User;
