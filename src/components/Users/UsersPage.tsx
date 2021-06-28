@@ -1,12 +1,16 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getMyId } from '../../redux/authSelectors';
-import { FilterType, follow, requestUsers, unfollow } from '../../redux/usersReducer';
-import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersSearchFilter } from '../../redux/usersSelectors';
-import { UsersSearchForm } from './UsersSearchForm';
-import UsersPagination from './UsersPagination';
-import User from './User';
-import s from './Users.module.css';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMyId } from '../../redux/authSelectors'
+import { FilterType, follow, requestUsers, unfollow } from '../../redux/usersReducer'
+import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersSearchFilter } from '../../redux/usersSelectors'
+import { UsersSearchForm } from './UsersSearchForm'
+import UsersPagination from './UsersPagination'
+import User from './User'
+import s from './Users.module.css'
+import { useHistory } from 'react-router'
+import * as queryString from 'querystring'
+
+type QueryParamsType = { term?: string, page?: string, friend?: string }
 
 const UsersPage = () => {
     const onPageChange = (pageNumber: number) => {
@@ -25,9 +29,39 @@ const UsersPage = () => {
     const dispatch = useDispatch()
     const followUser = (userId: number) => { dispatch(follow(userId)) }
     const unfollowUser = (userId: number) => { dispatch(unfollow(userId)) }
+    const history = useHistory()
+
     useEffect(() => {
-        dispatch(requestUsers(currentPage, pageSize, filter))
+        const parsedSearch = queryString.parse(history.location.search.substr(1)) as QueryParamsType
+        let actualPage = currentPage
+        let actualFilter = filter
+        if (parsedSearch.page) actualPage = Number(parsedSearch.page)
+        if (parsedSearch.term) actualFilter = { ...actualFilter, term: parsedSearch.term as string }
+        switch (parsedSearch.friend) {
+            case "null":
+                actualFilter = { ...actualFilter, friend: null }
+                break;
+            case "true":
+                actualFilter = { ...actualFilter, friend: true }
+                break;
+            case "false":
+                actualFilter = { ...actualFilter, friend: false }
+                break
+        }
+        dispatch(requestUsers(actualPage, pageSize, actualFilter))
     }, [])
+    useEffect(() => {
+        const query: QueryParamsType = {}
+        if (!!filter.term) query.term = filter.term
+        if (filter.friend !== null) query.friend = String(filter.friend)
+        if (currentPage !== 1) query.page = String(currentPage)
+        history.push(
+            {
+                pathname: "/users",
+                search: queryString.stringify(query)
+            }
+        )
+    }, [filter, currentPage])
 
     return <div>
         <UsersPagination
@@ -47,7 +81,7 @@ const UsersPage = () => {
                     followingInProgress={followingInProgress}
                     myId={myId}
                     followUser={followUser}
-                    unfollowUser={unfollowUser}                
+                    unfollowUser={unfollowUser}
                 />
             )}
         </div>

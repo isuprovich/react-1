@@ -31,7 +31,7 @@ type PropsType = MSTPType & MDTPType
 
 class App extends React.Component<PropsType> {
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
-    this.props.showErrorThunk(true, 'some error')
+    this.props.showErrorThunk(true, 'Неизвестная ошибка')
   }
   componentDidMount() {
     this.props.initApp();
