@@ -2,7 +2,7 @@ import { AppStateType } from './redux/reduxStore';
 import React from 'react';
 import './App.css';
 import Preloader from './components/common/preloader/preloader';
-import HeaderContainer from './components/Header/HeaderContainer';
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { Redirect, Route, withRouter } from 'react-router';
 import { initApp, showErrorThunk } from './redux/appReducer'
@@ -44,7 +44,7 @@ class App extends React.Component<PropsType> {
     if (!this.props.initialized) return <Preloader />
     return <div className='app-wrapper'>
         {this.props.isFetching && <Preloader />}
-        <HeaderContainer />
+        <Header />
         <div className='app-wrapper-content'>
           {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
           <Route exact path='/'

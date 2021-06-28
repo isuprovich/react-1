@@ -1,15 +1,15 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { logout } from '../../redux/authReducer';
+import { getIsAuth, getMyId, getMyLogin } from '../../redux/authSelectors';
 import s from './Header.module.css';
 
-type HeaderType = {
-    isAuth: boolean,
-    myId: number | null,
-    myLogin: string | null
-    logout: () => void
-}
-
-const Header: React.FC<HeaderType> = ({isAuth, myId, myLogin, logout}) => {
+const Header = () => {
+    const isAuth = useSelector(getIsAuth)
+    const myId = useSelector(getMyId)
+    const myLogin = useSelector(getMyLogin)
+    const dispatch = useDispatch()
+    const logoutMe = () => (dispatch(logout()))
     return (
         <header className={s.header}>
             <div>
@@ -28,7 +28,7 @@ const Header: React.FC<HeaderType> = ({isAuth, myId, myLogin, logout}) => {
                                 <NavLink to={`/profile/${myId}`} className={s.navlink} activeClassName={s.active}>{myLogin}</NavLink>
                             </div>
                             <div className={s.item}>
-                                <NavLink to='/login' className={s.navlink} onClick={logout}>Выход</NavLink>
+                                <NavLink to='/login' className={s.navlink} onClick={logoutMe}>Выход</NavLink>
                             </div>
                         </div>
                     </div>

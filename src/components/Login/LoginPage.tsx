@@ -14,7 +14,11 @@ const LoginPage = () => {
     const onSubmit = (formData: FormDataType) => {
         dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
     }
-    useEffect(() => {if (isNeedCaptcha) {dispatch(getCaptcha())}}, [])
+    useEffect(() => {
+        if (isNeedCaptcha) {
+            dispatch(getCaptcha())
+        }
+    }, [])
 
     if (isAuth) {
         return <Redirect to={"/profile"} />
