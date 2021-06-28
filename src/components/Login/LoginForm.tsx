@@ -5,7 +5,7 @@ import s from './LoginForm.module.css';
 import { required } from '../../utils/validators/validators'
 
 type LoginFormTypes = {
-    needCaptcha: boolean,
+    isNeedCaptcha: boolean,
     captchaUrl: string | undefined
 }
 
@@ -18,7 +18,7 @@ export type FormDataType = {
 
 type LoginFormValuesTypeKeys = Extract<keyof FormDataType, string>
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType, LoginFormTypes> & LoginFormTypes> = ({ handleSubmit, error, needCaptcha, captchaUrl }) => {
+const LoginForm: React.FC<InjectedFormProps<FormDataType, LoginFormTypes> & LoginFormTypes> = ({ handleSubmit, error, isNeedCaptcha, captchaUrl }) => {
     return <form className={s.loginform} onSubmit={handleSubmit}>
         {createField<LoginFormValuesTypeKeys>('email', 'email', 'Ваш E-mail', [required], Input, undefined, undefined)}
         {createField<LoginFormValuesTypeKeys>('password', 'password', 'Пароль', [required], Input, undefined, undefined)}
@@ -26,7 +26,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType, LoginFormTypes> & Logi
             {createField<LoginFormValuesTypeKeys>('rememberMe', 'checkbox', undefined, [], Input, s.checkbox, undefined)}
             <span className={s.checkboxName}>Запомнить меня?</span>
         </div>
-        {needCaptcha && <div>
+        {isNeedCaptcha && <div>
             <div>
                 <img src={captchaUrl} alt="CAPTCHA" />
             </div>

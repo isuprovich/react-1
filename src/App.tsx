@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import { withSuspense } from './hoc/WithSuspense';
 import Notification from './components/common/notification/notification';
 
-const LoginContainer = withSuspense(React.lazy(() => import('./components/Login/LoginContainer')))
+const LoginPage = withSuspense(React.lazy(() => import('./components/Login/LoginPage')))
 const ProfileContainer = withSuspense(React.lazy(() => import('./components/Profile/ProfileContainer')))
 const UsersPage = withSuspense(React.lazy(() => import('./components/Users/UsersPage')))
 const DialogsContainer = withSuspense(React.lazy(() => import('./components/Dialogs/DialogsContainer')))
@@ -50,7 +50,7 @@ class App extends React.Component<PropsType> {
           <Route exact path='/'
             render={() => <Redirect to={'/profile'} />} />
           <Route path='/login'
-            render={() => <LoginContainer />} />
+            render={() => <LoginPage />} />
           <Route path='/profile/:userId?'
             render={() => <ProfileContainer />} />
           <Route path='/dialogs'
