@@ -1,15 +1,25 @@
 import { AppStateType } from './redux/reduxStore';
 import React from 'react';
-import './App.css';
 import Preloader from './components/common/preloader/preloader';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+//import Footer from './components/Footer/Footer';
 import { Redirect, Route, withRouter } from 'react-router';
 import { initApp, showErrorThunk } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withSuspense } from './hoc/WithSuspense';
+import { Link } from 'react-router-dom';
 import Notification from './components/common/notification/notification';
+import 'antd/dist/antd.css';
+import './App.css'
+import { Layout, Menu } from 'antd';
+import {
+  TeamOutlined,
+  UserOutlined,
+  MessageOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
+
+const { Content, Footer, Sider } = Layout;
 
 const LoginPage = withSuspense(React.lazy(() => import('./components/Login/LoginPage')))
 const ProfileContainer = withSuspense(React.lazy(() => import('./components/Profile/ProfileContainer')))
@@ -23,6 +33,7 @@ type MSTPType = {
   isFetching: boolean
 }
 
+
 type MDTPType = {
   initApp: () => void,
   showErrorThunk: (notifyError: boolean, errorMessage: string) => void
@@ -30,6 +41,13 @@ type MDTPType = {
 type PropsType = MSTPType & MDTPType
 
 class App extends React.Component<PropsType> {
+  state = {
+    collapsed: true,
+  };
+
+  onCollapse = (collapsed: boolean) => {
+    this.setState({ collapsed });
+  };
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     this.props.showErrorThunk(true, 'Неизвестная ошибка')
   }
@@ -41,25 +59,56 @@ class App extends React.Component<PropsType> {
     window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
   }
   render() {
-    if (!this.props.initialized) return <Preloader />
-    return <div className='app-wrapper'>
-        {this.props.isFetching && <Preloader />}
-        <Header />
-        <div className='app-wrapper-content'>
-          {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
-          <Route exact path='/'
-            render={() => <Redirect to={'/profile'} />} />
-          <Route path='/login'
-            render={() => <LoginPage />} />
-          <Route path='/profile/:userId?'
-            render={() => <ProfileContainer />} />
-          <Route path='/dialogs'
-            render={() => <DialogsContainer />} />
-          <Route path='/users'
-            render={() => <UsersPage />} />
-        </div>
-        <Footer />
-      </div>
+    const { collapsed } = this.state;
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} style={{
+          overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0
+        }}>
+          <div className="logo" />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item key="1" icon={<UserOutlined />}>Мой профиль</Menu.Item>
+            <Menu.Item key="2" icon={<TeamOutlined />}><Link to='/users' />Пользователи</Menu.Item>
+            <Menu.Item key="3" icon={<MessageOutlined />}><Link to='/dialogs' />Диалоги</Menu.Item>
+            <Menu.Item key="4" icon={<LogoutOutlined />} danger={true}>Выйти</Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout className="site-layout">
+          <Content style={{ margin: '16px' }}>
+            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+              {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
+              <Route exact path='/' render={() => <Redirect to={'/profile'} />} />
+              <Route path='/login' render={() => <LoginPage />} />
+              <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
+              <Route path='/dialogs' render={() => <DialogsContainer />} />
+              <Route path='/users' render={() => <UsersPage />} />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>ReactVK ©2021 Created by Ivan Suprovich</Footer>
+        </Layout>
+      </Layout>
+    )
+    // if (!this.props.initialized) return <Preloader />
+    // return (
+    //   <Layout>
+    //     <HeaderComponent />
+    //     <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+    //       <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+
+    //       </div>
+    //     </Content>
+    //     <Footer style={{ textAlign: 'center' }}>ReactVK ©2021 Created by Ivan Suprovich</Footer>
+    //   </Layout>
+    // )
+    //   <div className='app-wrapper'>
+    //     {this.props.isFetching && <Preloader />}
+    //     <Header />
+    //     <div className='app-wrapper-content'>
+    //       
+    //     </div>
+    //     <Footer />
+    //   </div>
+    // )
   }
 }
 
