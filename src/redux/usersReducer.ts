@@ -9,7 +9,7 @@ import { fetchActions, FetchActionTypes } from './fetchReducer';
 
 let initialState = {
     users: [] as Array<UsersType>,
-    pageSize: 13 as number,
+    pageSize: 10 as number,
     totalUsersCount: 0 as number,
     currentPage: 1 as number,
     followingInProgress: [] as Array<number>, // array of userId
@@ -80,7 +80,7 @@ export const usersActions = {
 //THUNKS
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, UsersActionTypes | FetchActionTypes>
 
-export const requestUsers = (currentPage: number, pageSize: number, filter: FilterType): ThunkType => async (dispatch) => {
+export const requestUsers = (currentPage: number, pageSize: number | undefined, filter: FilterType): ThunkType => async (dispatch) => {
     dispatch(fetchActions.toggleIsFetching(true))
     dispatch(usersActions.setCurrentPage(currentPage));
     dispatch(usersActions.setFilter(filter))

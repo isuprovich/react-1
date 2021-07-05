@@ -1,7 +1,6 @@
 import { AppStateType } from './redux/reduxStore';
 import React from 'react';
 import Preloader from './components/common/preloader/preloader';
-//import Footer from './components/Footer/Footer';
 import { Redirect, Route, withRouter } from 'react-router';
 import { initApp, showErrorThunk } from './redux/appReducer'
 import { connect } from 'react-redux';
@@ -11,7 +10,7 @@ import { Link } from 'react-router-dom';
 import Notification from './components/common/notification/notification';
 import 'antd/dist/antd.css';
 import './App.css'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, notification, Button } from 'antd';
 import {
   TeamOutlined,
   UserOutlined,
@@ -28,11 +27,10 @@ const DialogsContainer = withSuspense(React.lazy(() => import('./components/Dial
 
 type MSTPType = {
   initialized: boolean,
-  notifyError: any,
+  notifyError: boolean,
   errorMessage: string,
   isFetching: boolean
 }
-
 
 type MDTPType = {
   initApp: () => void,
@@ -41,15 +39,17 @@ type MDTPType = {
 type PropsType = MSTPType & MDTPType
 
 class App extends React.Component<PropsType> {
-  state = {
-    collapsed: true,
-  };
-
-  onCollapse = (collapsed: boolean) => {
-    this.setState({ collapsed });
+  openNotification = (message: string) => {
+    notification.error({
+      message: message,
+      description: this.props.errorMessage,
+      placement: 'bottomLeft',
+      duration: 10
+    });
   };
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
-    this.props.showErrorThunk(true, 'Неизвестная ошибка')
+    //this.props.showErrorThunk(true, 'Неизвестная ошибка')
+    //this.openNotification('Ошибка')
   }
   componentDidMount() {
     this.props.initApp();
@@ -58,16 +58,23 @@ class App extends React.Component<PropsType> {
   componentWillUnmount() {
     window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
   }
+
+
+  state = { collapsed: true };
+  onCollapse = (collapsed: boolean) => { this.setState({ collapsed }) }
+
   render() {
-    const { collapsed } = this.state;
+    const { collapsed } = this.state
+    if (!this.props.initialized) return <Preloader />
     return (
       <Layout style={{ minHeight: '100vh' }}>
+        {this.props.isFetching && <Preloader />}
         <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} style={{
           overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0
         }}>
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<UserOutlined />}>Мой профиль</Menu.Item>
+            <Menu.Item key="1" icon={<UserOutlined />}><Link to='/profile' />Мой профиль</Menu.Item>
             <Menu.Item key="2" icon={<TeamOutlined />}><Link to='/users' />Пользователи</Menu.Item>
             <Menu.Item key="3" icon={<MessageOutlined />}><Link to='/dialogs' />Диалоги</Menu.Item>
             <Menu.Item key="4" icon={<LogoutOutlined />} danger={true}>Выйти</Menu.Item>
@@ -88,27 +95,6 @@ class App extends React.Component<PropsType> {
         </Layout>
       </Layout>
     )
-    // if (!this.props.initialized) return <Preloader />
-    // return (
-    //   <Layout>
-    //     <HeaderComponent />
-    //     <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-    //       <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
-
-    //       </div>
-    //     </Content>
-    //     <Footer style={{ textAlign: 'center' }}>ReactVK ©2021 Created by Ivan Suprovich</Footer>
-    //   </Layout>
-    // )
-    //   <div className='app-wrapper'>
-    //     {this.props.isFetching && <Preloader />}
-    //     <Header />
-    //     <div className='app-wrapper-content'>
-    //       
-    //     </div>
-    //     <Footer />
-    //   </div>
-    // )
   }
 }
 

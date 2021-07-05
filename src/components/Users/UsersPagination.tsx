@@ -1,41 +1,23 @@
-import s from './Users.module.css';
+import { Pagination } from 'antd';
 
 type UsersPaginationType = {
     totalUsersCount: number,
     pageSize: number,
     currentPage: number,
-    onPageChange: (page: number) => void
+    onPageChange: (page: number, pageSize?: number | undefined) => void
 }
 
-const UsersPagination: React.FC<UsersPaginationType> = ({totalUsersCount, pageSize, currentPage, onPageChange}) => {
+const UsersPagination: React.FC<UsersPaginationType> = ({ totalUsersCount, pageSize, currentPage, onPageChange }) => {
     const pagesCount = Math.ceil(totalUsersCount / pageSize);
-    let pages = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i);
-    }
-    let startPosition = 0;
-    if (currentPage > 5) {
-        startPosition = currentPage - 6
-    }
-    return <div className={s.pageButtonsWrapper}>
-        <span
-            className={s.pageButton}
-            onClick={() => { if (currentPage > 1) { onPageChange(currentPage - 1) } }}>{'<'}
-        </span>
-        {pages.slice(startPosition, currentPage + 5).map(p => {
-            return <div className={s.pageButton} key={p}>
-                <div
-                    className={currentPage === p ? `${s.pageButton} ${s.selectedPage}` : undefined}
-                    onClick={() => { onPageChange(p) }}>
-                    {p}
-                </div>
-            </div>
-        })}
-        <span
-            className={s.pageButton}
-            onClick={() => { if (currentPage < pagesCount) { onPageChange(currentPage + 1) } }}>{'>'}
-        </span>
-    </div>
+
+    return <Pagination
+        total={pagesCount}
+        defaultCurrent={currentPage}
+        showSizeChanger
+        onChange={onPageChange}
+        responsive={true}
+        style={{display: 'flex', justifyContent: 'center'}}
+    />
 }
 
 export default UsersPagination;

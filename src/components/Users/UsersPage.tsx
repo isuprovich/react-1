@@ -13,7 +13,7 @@ import * as queryString from 'querystring'
 type QueryParamsType = { term?: string, page?: string, friend?: string }
 
 const UsersPage = () => {
-    const onPageChange = (pageNumber: number) => {
+    const onPageChange = (pageNumber: number, pageSize?: number | undefined) => {
         dispatch(requestUsers(pageNumber, pageSize, filter))
     }
     const onFilterChange = (filter: FilterType) => {

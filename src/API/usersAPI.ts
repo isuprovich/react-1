@@ -2,7 +2,7 @@ import { FilterType } from '../redux/usersReducer';
 import { axiosInstance, GetItemsType, ResponseType } from './api';
 
 export const usersAPI = {
-    getUsers(currentPage: number, pageSize: number, filter: FilterType) {
+    getUsers(currentPage: number, pageSize: number | undefined, filter: FilterType) {
         return axiosInstance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}&term=${filter.term}` + (filter.friend === null ? '' : `&friend=${filter.friend}`))
             .then(res => res.data)
     },

@@ -6,11 +6,15 @@ import App from './App';
 import store from './redux/reduxStore'
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { ConfigProvider } from 'antd';
+import ruRU from 'antd/lib/locale/ru_RU';
 
 ReactDOM.render(
     <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Provider store={store}>
-            <App />
+            <ConfigProvider locale={ruRU}>
+                <App />
+            </ConfigProvider>
         </Provider>
     </BrowserRouter>,
     document.getElementById('root')
