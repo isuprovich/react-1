@@ -13,6 +13,7 @@ const UsersPagination: React.FC<UsersPaginationType> = ({ totalUsersCount, pageS
     return <Pagination
         total={pagesCount}
         defaultCurrent={currentPage}
+        defaultPageSize={20}
         showSizeChanger
         onChange={onPageChange}
         responsive={true}

@@ -9,7 +9,7 @@ import { fetchActions, FetchActionTypes } from './fetchReducer';
 
 let initialState = {
     users: [] as Array<UsersType>,
-    pageSize: 10 as number,
+    pageSize: 20 as number,
     totalUsersCount: 0 as number,
     currentPage: 1 as number,
     followingInProgress: [] as Array<number>, // array of userId

@@ -9,6 +9,8 @@ import User from './User'
 import s from './Users.module.css'
 import { useHistory } from 'react-router'
 import * as queryString from 'querystring'
+import { Row, Col, Space } from 'antd';
+
 
 type QueryParamsType = { term?: string, page?: string, friend?: string }
 
@@ -73,17 +75,24 @@ const UsersPage = () => {
         <UsersSearchForm
             onFilterChange={onFilterChange}
         />
-        <div className={s.wrapper}>
+        <div style={{height: '24px'}}></div>
+        <Row gutter={[8, 8]} justify={'center'} >
             {users.map(u =>
-                <User
-                    key={u.id}
-                    user={u}
-                    followingInProgress={followingInProgress}
-                    myId={myId}
-                    followUser={followUser}
-                    unfollowUser={unfollowUser}
-                />
+                <Col>
+                    <User
+                        key={u.id}
+                        user={u}
+                        followingInProgress={followingInProgress}
+                        myId={myId}
+                        followUser={followUser}
+                        unfollowUser={unfollowUser}
+                    />
+                </Col>
+
             )}
+        </Row>
+        <div className={s.wrapper}>
+
         </div>
     </div>
 }
