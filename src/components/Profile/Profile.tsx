@@ -2,10 +2,11 @@ import React from 'react'
 import s from './Profile.module.css';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import ProfileLeft from './ProfileLeft/ProfileLeft';
-import Preloader from '../common/preloader/preloader';
+import LoadProgress from '../common/LoadProgress/loadProgress';
 import { PostsType, ProfileType } from '../../types/types';
 import MyPostsMemorized from './MyPosts/MyPosts';
 import ProfileEditorForm from '../Profile/ProfileEditor/ProfileEditorForm';
+import ProfileEditorDrawer from './ProfileEditor/ProfileEditorDrawer';
 
 type PropsType = {
     updateProfileInfoThunk: (profile: ProfileType) => void,
@@ -46,9 +47,10 @@ const Profile: React.FC<PropsType> = ({ updateProfileInfoThunk, updateStatus, sa
                 profileEditToggle={profileEditToggle}
             />
             <MyPostsMemorized posts={posts} addPost={addPost} />
+            <ProfileEditorDrawer />
         </div>
     );
-    return <Preloader />
+    return <LoadProgress />
 }
 
 export default Profile;

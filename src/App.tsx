@@ -6,21 +6,17 @@ import { initApp, showErrorThunk } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withSuspense } from './hoc/WithSuspense';
-import { Link } from 'react-router-dom';
 import Notification from './components/common/notification/notification';
 import 'antd/dist/antd.css';
 import './App.css'
-import { Layout, Menu, notification, Button } from 'antd';
-import {
-  TeamOutlined,
-  UserOutlined,
-  MessageOutlined,
-  LogoutOutlined
-} from '@ant-design/icons';
+import { Layout, notification } from 'antd';
+import Sidebar from './components/Sidebar/Sidebar';
+import LoadProgress from './components/common/LoadProgress/loadProgress'
+import {Code500, Code404} from './components/common/ErrorPages/ErrorPages';
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Footer } = Layout;
 
-const LoginPage = withSuspense(React.lazy(() => import('./components/Login/LoginPage')))
+const LoginForm = withSuspense(React.lazy(() => import('./components/Login/LoginForm')))
 const ProfileContainer = withSuspense(React.lazy(() => import('./components/Profile/ProfileContainer')))
 const UsersPage = withSuspense(React.lazy(() => import('./components/Users/UsersPage')))
 const DialogsContainer = withSuspense(React.lazy(() => import('./components/Dialogs/DialogsContainer')))
@@ -29,7 +25,9 @@ type MSTPType = {
   initialized: boolean,
   notifyError: boolean,
   errorMessage: string,
-  isFetching: boolean
+  errorCode: number,
+  isFetching: boolean,
+  isAuth: boolean
 }
 
 type MDTPType = {
@@ -59,37 +57,23 @@ class App extends React.Component<PropsType> {
     window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
   }
 
-
-  state = { collapsed: true };
-  onCollapse = (collapsed: boolean) => { this.setState({ collapsed }) }
-
   render() {
-    const { collapsed } = this.state
     if (!this.props.initialized) return <Preloader />
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        {this.props.isFetching && <Preloader />}
-        <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} style={{
-          overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0
-        }}>
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<UserOutlined />}><Link to='/profile' />Мой профиль</Menu.Item>
-            <Menu.Item key="2" icon={<TeamOutlined />}><Link to='/users' />Пользователи</Menu.Item>
-            <Menu.Item key="3" icon={<MessageOutlined />}><Link to='/dialogs' />Диалоги</Menu.Item>
-            <Menu.Item key="4" icon={<LogoutOutlined />} danger={true}>Выйти</Menu.Item>
-          </Menu>
-        </Sider>
+        {this.props.isAuth && <Sidebar />}
         <Layout className="site-layout">
+          {this.props.isFetching && <LoadProgress />}
           <Content style={{ margin: '16px' }}>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-              {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />}
-              <Route exact path='/' render={() => <Redirect to={'/profile'} />} />
-              <Route path='/login' render={() => <LoginPage />} />
-              <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
-              <Route path='/dialogs' render={() => <DialogsContainer />} />
-              <Route path='/users' render={() => <UsersPage />} />
-            </div>
+            {/* {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />} */}
+            {this.props.errorCode && <Redirect to={`/${this.props.errorCode}`} />}
+            <Route path='/login' render={() => <LoginForm />} />
+            <Route exact path='/' render={() => <Redirect to={'/profile'} />} />
+            <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
+            <Route path='/dialogs' render={() => <DialogsContainer />} />
+            <Route path='/users' render={() => <UsersPage />} />
+            <Route path={`/500`} render={() => <Code500 errorMessage={this.props.errorMessage} />} />
+            <Route path={`/404`} render={() => <Code404 errorMessage={this.props.errorMessage} />} />
           </Content>
           <Footer style={{ textAlign: 'center' }}>ReactVK ©2021 Created by Ivan Suprovich</Footer>
         </Layout>
@@ -102,7 +86,9 @@ const mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized,
   notifyError: state.app.notifyError,
   errorMessage: state.app.errorMessage,
-  isFetching: state.fetchAnim.isFetching
+  errorCode: state.app.errorCode,
+  isFetching: state.fetchAnim.isFetching,
+  isAuth: state.auth.isAuth
 })
 
 export default compose<React.ComponentType>(

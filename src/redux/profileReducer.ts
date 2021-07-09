@@ -81,7 +81,9 @@ export const getProfile = (userId: number | null): ThunkType => async (dispatch)
         dispatch(profileActions.setUserProfile(response));
         dispatch(fetchActions.toggleIsFetching(false));
     } catch (error) {
-        dispatch(showErrorThunk(true, `Пользователь с id ${userId} не найден`))
+        console.log(error)
+        dispatch(showErrorThunk(true, `Пользователь с id ${userId} не найден`, 404))
+        dispatch(fetchActions.toggleIsFetching(false));
     }
 }
 export const updateProfileInfoThunk = (newProfileInfo: ProfileType): ThunkType => async (dispatch, getState) => {

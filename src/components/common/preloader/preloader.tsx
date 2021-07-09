@@ -5,9 +5,13 @@ import { LoadingOutlined } from '@ant-design/icons';
 const antIcon = <LoadingOutlined style={{ fontSize: 100, }} spin />
 
 let Preloader = () => {
-    return <div className={s.rollerWrapper}>
-        <Spin indicator={antIcon} />
-    </div>
+    return <Spin indicator={antIcon} style={{
+        zIndex: 200,
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translateX(-50%) translateY(-50%)'
+    }} />
 }
 
 export default Preloader

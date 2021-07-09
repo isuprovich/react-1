@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { profileActions, getProfile, getStatus, updateStatus, saveAva, updateProfileInfoThunk } from '../../redux/profileReducer'
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'redux';
-import Preloader from '../common/preloader/preloader';
 import { AppStateType } from '../../redux/reduxStore';
 import { PostsType, ProfileType } from '../../types/types';
 
@@ -56,7 +55,6 @@ class ProfileContainer extends React.Component<PropsType> {
     render() {
         if (!this.props.isAuth) return <Redirect to={"/login"} />
         return <>
-            {this.props.isFetching && <Preloader />}
             <Profile
                 {...this.props}
                 profile={this.props.profile}

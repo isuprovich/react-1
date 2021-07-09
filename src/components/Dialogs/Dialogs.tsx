@@ -19,11 +19,11 @@ const Dialogs: React.FC<PropsType> = (props) => {
     }
 
     return (
-        <div className={s.dialogs}>
-            <div className={s.dialogsList}>
+        <div>
+            <div>
                 {dialogs}
             </div>
-            <div className={s.messagesList}>
+            <div>
                 {messagesList}
             </div>
             <AddMessageFormRedux onSubmit={addNewMessage} />

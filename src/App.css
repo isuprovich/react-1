@@ -10,3 +10,26 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.ant-card-body {
+  padding: 8px 16px;
+}
+
+.login-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  max-width: 400px;
+  background-color: white;
+  padding: 50px;
+}
+.login-form-forgot {
+  float: right;
+}
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+.login-form-button {
+  width: 100%;
+}

@@ -5,7 +5,8 @@ import { getAuthUserData } from './authReducer';
 let initialState = {
     initialized: false as boolean,
     notifyError: false as boolean,
-    errorMessage: null as string | null
+    errorMessage: null as string | null,
+    errorCode: null as number | null
 };
 type InitialStateType = typeof initialState
 
@@ -20,7 +21,8 @@ const appReducer = (state = initialState, action: AppActionTypes): InitialStateT
             return {
                 ...state,
                 notifyError: action.notifyError,
-                errorMessage: action.errorMessage
+                errorMessage: action.errorMessage,
+                errorCode: action.errorCode
             }
         default:
             return state;
@@ -31,7 +33,7 @@ const appReducer = (state = initialState, action: AppActionTypes): InitialStateT
 type AppActionTypes = InferActionsTypes<typeof appActions>
 export const appActions = {
     initSuccess: () => ({ type: 'VK/APP/INIT_SUCCESS' } as const),
-    showError: (notifyError: boolean, errorMessage: string) => ({ type: 'VK/APP/NEW_ERROR', notifyError, errorMessage } as const)
+    showError: (notifyError: boolean, errorMessage: string, errorCode: number) => ({ type: 'VK/APP/NEW_ERROR', notifyError, errorMessage, errorCode } as const)
 }
 
 
@@ -44,9 +46,9 @@ export const initApp = (): ThunkType => async (dispatch) => {
         dispatch(appActions.initSuccess());
     });
 }
-export const showErrorThunk = (notifyError: boolean, errorMessage: string): ThunkType => async (dispatch) => {
-    dispatch(appActions.showError(notifyError, errorMessage))
-    setTimeout(() => { dispatch(appActions.showError(false, '')) }, 10000)
+export const showErrorThunk = (notifyError: boolean, errorMessage: string, errorCode: number): ThunkType => async (dispatch) => {
+    dispatch(appActions.showError(notifyError, errorMessage, errorCode))
+    //setTimeout(() => { dispatch(appActions.showError(false, '', {})) }, 10000)
 }
 
 export default appReducer;

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import s from './Users.module.css';
-import avaPlaceholder from '../../assets/avatar_placeholder.png'
 import { UsersType } from '../../types/types';
-import { Card, Avatar, Button, Row, Col } from 'antd';
+import { Card, Avatar, Button, Row, Col, Divider } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import { UserAddOutlined, UserDeleteOutlined, UserOutlined } from '@ant-design/icons';
+import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
 const { Meta } = Card;
 
 type PropsType = {
@@ -17,54 +16,37 @@ type PropsType = {
 }
 
 const User: React.FC<PropsType> = React.memo(({ user, myId, followingInProgress, followUser, unfollowUser }) => {
+    const history = useHistory();
+    const routeChange = (id: number) => {
+        let path = '/profile/' + id
+        history.push(path)
+    }
     return (
-        <Card
-            style={{ width: "400px" }}
-            key={user.id}
-            actions={[
-                <Button type={'link'}><Link to={'/profile/' + user.id} style={{ color: '#1890ff' }}><UserOutlined /></Link></Button>,
-                <Button
-                    type={'link'}
-                    icon={<UserAddOutlined />}
-                    loading={followingInProgress.some(id => id === user.id)}
-                    onClick={() => { followUser(user.id) }}
-                    disabled={user.followed} />,
-                <Button
-                    type={'link'} danger
-                    icon={<UserDeleteOutlined />}
-                    loading={followingInProgress.some(id => id === user.id)}
-                    onClick={() => { unfollowUser(user.id) }}
-                    disabled={!user.followed} />
-            ]}
-        >
+        <Card style={{ width: "100%", marginBottom: "8px" }} key={user.id}>
             <Row gutter={[16, 8]} align={'middle'}>
                 <Col><Avatar size={64} src={user.photos.small} alt={user.name}>{user.name}</Avatar></Col>
-                <Col>
+                <Col flex={'auto'} onClick={() => routeChange(user.id)} style={{ cursor: 'pointer', width: 'avilable' }}>
                     <Row><Title level={4}>{user.name}</Title></Row>
                     <Row>{user.status}</Row>
                 </Col>
-
+                {myId !== user.id && <Col>
+                    {user.followed
+                        ? <Button
+                            type={'primary'} danger
+                            icon={<UserDeleteOutlined />}
+                            loading={followingInProgress.some(id => id === user.id)}
+                            onClick={() => { unfollowUser(user.id) }}
+                            disabled={!user.followed}>Отписаться</Button>
+                        : <Button
+                            type={'primary'}
+                            icon={<UserAddOutlined />}
+                            loading={followingInProgress.some(id => id === user.id)}
+                            onClick={() => { followUser(user.id) }}
+                            disabled={user.followed}>Подписаться</Button>
+                    }
+                </Col>}
             </Row>
         </Card>
-        // <Col>
-        // {user.followed
-        //     ? <Button
-        //         type="primary" danger
-        //         loading={followingInProgress.some(id => id === user.id)}
-        //         onClick={() => { unfollowUser(user.id) }}>Отписаться</Button>
-        //     : <Button
-        //         loading={followingInProgress.some(id => id === user.id)}
-        //         onClick={() => { followUser(user.id) }}>Подписаться</Button>
-        // }
-        // </Col>
-        // <div key={user.id} className={s.userCard}>
-        //     <img src={user.photos.small != null ? user.photos.small : avaPlaceholder} alt="User avatar" className={s.userAva100} />
-        //     <NavLink to={'/profile/' + user.id} className={s.navLink}>{user.name}</NavLink>
-        //     <div className={s.textOverflow}>{user.status}</div>
-        //     {myId !== user.id && <div className={s.followButtons}>
-
-        //     </div>}
-        // </div>
     )
 })
 

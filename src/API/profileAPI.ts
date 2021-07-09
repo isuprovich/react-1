@@ -7,7 +7,8 @@ type SavePhotoResponseDataType = {
 
 export const profileAPI = {
     getProfile(userId: number | null) {
-        return axiosInstance.get<ProfileType>(`profile/${userId}`).then(res => res.data)
+        return axiosInstance.get<ProfileType>(`profile/${userId}`)
+        .then(res => res.data)
     },
     getProfileStatus(userId: number | null) {
         return axiosInstance.get<string>(`profile/status/${userId}`).then(res => res.data)

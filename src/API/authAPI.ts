@@ -8,7 +8,7 @@ export const authAPI = {
     me() {
         return axiosInstance.get<ResponseType<MeResponseDataType>>(`auth/me`).then(res => res.data)
     },
-    login(email: string, password: string, rememberMe: boolean, captcha = false) {
+    login(email: string, password: string, rememberMe: boolean, captcha: string) {
         return axiosInstance.post<ResponseType<LoginResponseDataType>>(`auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
     },
     logout() {
