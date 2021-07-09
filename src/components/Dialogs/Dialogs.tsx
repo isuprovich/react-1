@@ -3,6 +3,7 @@ import Message from './Messages/Message';
 import Dialog from './Dialog/Dialog';
 import { AddMessageFormRedux } from './Messages/AddMessageForm';
 import {InitialStateType} from '../../redux/dialogsReducer'
+import {Row, Col} from 'antd'
 
 type PropsType = {
     dialogsPage: InitialStateType
@@ -11,24 +12,26 @@ type PropsType = {
 
 const Dialogs: React.FC<PropsType> = (props) => {
 
-    let dialogs = props.dialogsPage.dialogsData.map(d => <Dialog key={d.id} id={d.id} name={d.name} />);
-    let messagesList = props.dialogsPage.messages.map(m => <Message message={m.message} key={m.id} id={m.id} />);
+    const dialogs = props.dialogsPage.dialogsData.map(d => <Dialog key={d.id} id={d.id} name={d.name} />);
+    const messagesList = props.dialogsPage.messages.map(m => <Message message={m.message} key={m.id} id={m.id} />);
 
-    let addNewMessage = (values: {newMessageText: string}) => {
+    const addNewMessage = (values: {newMessageText: string}) => {
         props.sendMessage(values.newMessageText);
     }
 
-    return (
-        <div>
-            <div>
+    return <>
+        <Row style={{height: '80%'}}>
+            <Col>
                 {dialogs}
-            </div>
-            <div>
-                {messagesList}
-            </div>
+            </Col>
+            <Col flex={'auto'} style={{ width: 'avilable', height: 'avilable'}}>
+                        {messagesList}
+            </Col>
+        </Row>
+        <Row>
             <AddMessageFormRedux onSubmit={addNewMessage} />
-        </div>
-    );
+        </Row>
+    </>
 }
 
 export default Dialogs;

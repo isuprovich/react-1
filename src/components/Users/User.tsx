@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import s from './Users.module.css';
+import { useHistory } from 'react-router-dom';
 import { UsersType } from '../../types/types';
 import { Card, Avatar, Button, Row, Col, Divider } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
-const { Meta } = Card;
 
 type PropsType = {
     user: UsersType,
