@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './AddMessageForm.module.css';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { createField, Textarea } from '../../common/FormsControls/FormsControls';
 import { maxLengthCreator, required } from '../../../utils/validators/validators';
@@ -11,7 +10,7 @@ const maxLength200 = maxLengthCreator(200);
 
 const AddMessageForm: React.FC<InjectedFormProps<AddMessageFormDataType>> = ({handleSubmit}) => {
     return (
-        <form onSubmit={handleSubmit} className={s.newMessageForm}>
+        <form onSubmit={handleSubmit}>
             {createField<AddMessageFormValuesTypeKeys>('newMessageText', '', 'Enter your message', [required, maxLength200], Textarea, undefined, undefined)}
             <button>
                 Отправить

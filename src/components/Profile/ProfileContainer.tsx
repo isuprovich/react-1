@@ -22,7 +22,6 @@ type MDTPType = {
     updateStatus: () => void,
     saveAva: () => void,
     profileEditToggle: () => void,
-    updateProfileInfoThunk: () => void,
     addPost: () => void
 }
 type PathParamsType = {
@@ -64,7 +63,6 @@ class ProfileContainer extends React.Component<PropsType> {
                 saveAva={this.props.saveAva}
                 myId={this.props.myId}
                 profileEditToggle={this.props.profileEditToggle}
-                updateProfileInfoThunk={this.props.updateProfileInfoThunk}
                 addPost={this.props.addPost}
             />
         </>

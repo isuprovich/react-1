@@ -1,22 +1,34 @@
-import React, { useState } from 'react'
-import { Drawer, Form, Button, Col, Row, Input, Select, Switch } from 'antd'
+import { useState } from 'react'
+import { Drawer, Form, Button, Col, Row, Input } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getProfile } from '../../../redux/profileSelectors'
-import { ContactsType } from '../../../types/types'
-
-const { Option } = Select
+import { capitalizeString } from '../../../utils/capitalizeString'
+import { updateProfileInfoThunk } from '../../../redux/profileReducer'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 
 const ProfileEditorDrawer = () => {
     const [visible, setVisible] = useState(false)
+    const [profileEditForm] = Form.useForm()
+    const [profileEditContactsForm] = Form.useForm()
+    const dispatch = useDispatch()
     const showDrawer = () => { setVisible(true) }
-    const onClose = () => { setVisible(false) }
+    const onClose = () => {
+        profileEditForm.resetFields()
+        profileEditContactsForm.resetFields()
+        setVisible(false)
+    }
+    const onSave = () => {
+        const newInfo = {...profileEditForm.getFieldsValue(), contacts: {...profileEditContactsForm.getFieldsValue()}}
+        console.log(newInfo)
+        dispatch(updateProfileInfoThunk(newInfo))
+        setVisible(false)
+    }
     const profile = useSelector(getProfile)
-    console.log(profile)
-
+    
     return <>
-        <Button type='text' onClick={showDrawer}>
-            <EditOutlined />
+        <Button type='primary' onClick={showDrawer} style={{display: 'block', margin: '0 auto', marginTop: '16px'}}>
+            <EditOutlined />Редактировать профиль
         </Button>
         <Drawer
             title="Редактировать профиль"
@@ -33,13 +45,13 @@ const ProfileEditorDrawer = () => {
                     <Button onClick={onClose} style={{ marginRight: 8 }}>
                         Отмена
                     </Button>
-                    <Button onClick={onClose} type="primary">
+                    <Button onClick={onSave} type={!profileEditForm.isFieldsTouched() ? 'primary' : 'ghost'}>
                         Сохранить изменения
                     </Button>
                 </div>
             }
         >
-            <Form layout="vertical" hideRequiredMark initialValues={{ ...profile }}>
+            <Form form={profileEditForm} name='profileEditForm' layout="vertical" hideRequiredMark initialValues={{ ...profile }}>
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
@@ -55,9 +67,9 @@ const ProfileEditorDrawer = () => {
                     <Col span={24}>
                         <Form.Item
                             name="lookingForAJob"
-                            label="Ищу работу"
+                            valuePropName="checked"
                         >
-                            <Switch checked={profile?.lookingForAJob}></Switch>
+                            <Checkbox>Ищу работу</Checkbox>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -81,21 +93,22 @@ const ProfileEditorDrawer = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                
-                {
-                    Object.keys(profile!.contacts).map(key => {
-                        console.log()
-                        return <Row gutter={16}>
+            </Form>
+            <Form form={profileEditContactsForm} name='profileEditContactsForm' layout="vertical" hideRequiredMark initialValues={{ ...profile?.contacts }}>
+                {Object.keys(profile!.contacts).map(contact => {
+                    return (
+                        <Row gutter={16} key={contact}>
                             <Col span={24}>
                                 <Form.Item
-                                    name={key}
-                                    label={key}
+                                    name={contact}
+                                    label={capitalizeString(contact)}
                                 >
-                                    <Input placeholder={`Введите ссылку вашего ${key}`} />
+                                    <Input placeholder={`Введите ссылку`} />
                                 </Form.Item>
                             </Col>
                         </Row>
-                    })}
+                    )
+                })}
             </Form>
         </Drawer>
     </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { UsersType } from '../../types/types';
-import { Card, Avatar, Button, Row, Col, Divider } from 'antd';
+import { Card, Avatar, Button, Row, Col } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
 

@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox, Image } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Title from 'antd/lib/typography/Title';
 import { useDispatch, useSelector } from 'react-redux';

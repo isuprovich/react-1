@@ -5,11 +5,8 @@ import ProfileLeft from './ProfileLeft/ProfileLeft';
 import LoadProgress from '../common/LoadProgress/loadProgress';
 import { PostsType, ProfileType } from '../../types/types';
 import MyPostsMemorized from './MyPosts/MyPosts';
-import ProfileEditorForm from '../Profile/ProfileEditor/ProfileEditorForm';
-import ProfileEditorDrawer from './ProfileEditor/ProfileEditorDrawer';
 
 type PropsType = {
-    updateProfileInfoThunk: (profile: ProfileType) => void,
     updateStatus: () => void,
     saveAva: (file: File) => void,
     profileEditToggle: () => void,
@@ -21,19 +18,9 @@ type PropsType = {
     addPost: () => void
 }
 
-const Profile: React.FC<PropsType> = ({ updateProfileInfoThunk, updateStatus, saveAva, profileEditToggle, profile, status, myId, profileEditMode, posts, addPost }) => {
-    const onSubmit = (formData: ProfileType) => {
-        updateProfileInfoThunk(formData)
-    }
+const Profile: React.FC<PropsType> = ({ updateStatus, saveAva, profileEditToggle, profile, status, myId, posts, addPost }) => {
     if (profile != null) return (
         <div className={s.profile}>
-            {profileEditMode && <div className={s.editorWrapper}>
-                <ProfileEditorForm
-                    profile={profile}
-                    initialValues={profile}
-                    onSubmit={onSubmit}
-                />
-            </div>}
             <ProfileLeft
                 profile={profile}
                 myId={myId}
@@ -47,7 +34,6 @@ const Profile: React.FC<PropsType> = ({ updateProfileInfoThunk, updateStatus, sa
                 profileEditToggle={profileEditToggle}
             />
             <MyPostsMemorized posts={posts} addPost={addPost} />
-            <ProfileEditorDrawer />
         </div>
     );
     return <LoadProgress />

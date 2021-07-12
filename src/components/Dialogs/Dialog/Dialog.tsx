@@ -18,7 +18,7 @@ const Dialog: React.FC<DialogType> = ({id, name}) => {
                 </Col>
                 <Col>
                     <Title level={4}>{name}</Title>
-                    <Text type="secondary">Online</Text>
+                    <Text type="success">Online</Text>
                 </Col>
             </Row>
         </Card>

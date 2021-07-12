@@ -1,4 +1,3 @@
-import s from './preloader.module.css'
 import 'antd/dist/antd.css';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
