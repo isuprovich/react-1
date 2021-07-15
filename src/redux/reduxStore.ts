@@ -4,6 +4,7 @@ import dialogsReducer from './dialogsReducer';
 import usersReducer from './usersReducer';
 import fetchReducer from './fetchReducer';
 import authReducer from './authReducer';
+import chatReducer from './chatReducer';
 import thunkMiddleware from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
 import appReducer from './appReducer';
@@ -15,6 +16,7 @@ let rootReducer = combineReducers({
     usersPage: usersReducer,
     fetchAnim: fetchReducer,
     auth: authReducer,
+    chat: chatReducer,
     form: formReducer
 })
 

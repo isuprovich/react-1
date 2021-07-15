@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, Avatar, Typography } from 'antd';
-import { ChatMessageType } from './ChatPage';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { userRedirect } from '../../utils/userRedirect';
+import { ChatMessageType } from '../../API/chatAPI';
 
 const { Text } = Typography
 
@@ -17,7 +17,7 @@ export const ChatMessage: React.FC<{ message: ChatMessageType; myId: number | nu
     const messageStyle = {
         maxWidth: 'fit-content',
         backgroundColor: '#f5f5f5',
-        borderRadius: '5px',
+        borderRadius: '2px',
         padding: '5px'
     }
     const pointerStyle = {

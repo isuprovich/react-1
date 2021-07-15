@@ -6,14 +6,9 @@ import { Resizable } from 're-resizable';
 import { useEffect } from 'react';
 import { ChatMessage } from './ChatMessage';
 import { getMyId } from '../../redux/authSelectors';
-import { useSelector } from 'react-redux';
-
-export type ChatMessageType = {
-    userId: number,
-    message: string,
-    photo: string,
-    userName: string
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chatReducer';
+import { getMessages } from '../../redux/chatSelectors';
 
 const ChatBtn: React.FC = () => {
     const [visible, setVisible] = useState(false)
@@ -34,64 +29,20 @@ const ChatBtn: React.FC = () => {
 }
 
 const Chat: React.FC = () => {
-
     const myId = useSelector(getMyId)
+    const messages = useSelector(getMessages)
+    const dispatch = useDispatch()
 
-    //useState Chat
-    const [messages, setMessages] = useState<ChatMessageType[]>([])
-    const [chatStatus, setChatStatus] = useState<'pending' | 'ready'>('pending')
-    const [chatWs, setChatWs] = useState<WebSocket | null>(null)
-
-    //useEffect New/Close/Reconnect Chat
     useEffect(() => {
-        let ws: WebSocket
-        const closeChatHandler = () => {
-            console.log('WS close')
-            setTimeout(createChatWS, 3000)
-        }
-        function createChatWS() {
-            ws?.removeEventListener('close', closeChatHandler)
-            ws?.close()
-            ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-            ws.addEventListener('close', closeChatHandler)
-            setChatWs(ws)
-        }
-        createChatWS()
+        dispatch(startMessagesListening())
         return () => {
-            ws.removeEventListener('close', closeChatHandler)
-            ws.close()
+            dispatch(stopMessagesListening())
         }
     }, [])
 
-    //useEffect Update Messages Chat
-    useEffect(() => {
-        const messagesHandler = (e: MessageEvent) => {
-            let newMessages = JSON.parse(e.data)
-            setMessages((prevMessages) => [...prevMessages, ...newMessages])
-            console.log('WS message')
-        }
-        chatWs?.addEventListener('message', messagesHandler)
-        return () => {
-            chatWs?.removeEventListener('message', messagesHandler)
-        }
-    }, [chatWs])
-
-    //useEffect OpenChat
-    useEffect(() => {
-        const openChatHandler = () => {
-            setChatStatus('ready')
-            console.log('WS ready')
-        }
-        chatWs?.addEventListener('open', openChatHandler)
-        return () => {
-            chatWs?.removeEventListener('open', openChatHandler)
-        }
-    }, [chatWs])
-
-    //useForm Chat SubmitHandler
     const [form] = Form.useForm()
     const onSend = (values: any) => {
-        chatWs?.send(values.message)
+        dispatch(sendMessage(values.message))
         form.resetFields()
     }
 
@@ -99,10 +50,10 @@ const Chat: React.FC = () => {
         <Resizable
             style={{ display: "flex", flexDirection: 'column' }}
             enable={{ top:true, right:false, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:true }}
-            defaultSize={{ width: '20vw', height: '10vh' }}
+            defaultSize={{ width: '30vw', height: '30vh' }}
             minWidth={'20vw'}
-            minHeight={'50vh'}
-            maxWidth={'40vw'}
+            minHeight={'30vh'}
+            maxWidth={'50vw'}
             maxHeight={'70vh'}
         >
             <div style={{ width: '100%', height: '100%', overflowY: 'auto', paddingBottom: '5px' }}>
@@ -124,7 +75,7 @@ const Chat: React.FC = () => {
                 </Col>
                 <Col>
                     <Form.Item>
-                        <Button disabled={chatStatus !== 'ready'} type={"primary"} htmlType="submit"><SendOutlined /></Button>
+                        <Button type={"primary"} htmlType="submit"><SendOutlined /></Button>
                     </Form.Item>
                 </Col>
             </Row>
