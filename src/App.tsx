@@ -6,13 +6,14 @@ import { initApp, showErrorThunk } from './redux/appReducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withSuspense } from './hoc/WithSuspense';
-import Notification from './components/common/notification/notification';
+//import Notification from './components/common/notification/notification';
 import 'antd/dist/antd.css';
 import './App.css'
 import { Layout, notification } from 'antd';
 import Sidebar from './components/Sidebar/Sidebar';
 import LoadProgress from './components/common/LoadProgress/loadProgress'
 import {Code500, Code404} from './components/common/ErrorPages/ErrorPages';
+import ChatBtn from './pages/Chat/ChatPage';
 
 const { Content, Footer } = Layout;
 
@@ -67,6 +68,7 @@ class App extends React.Component<PropsType> {
           <Content style={{ margin: '16px' }}>
             {/* {this.props.notifyError && <Notification errorMessage={this.props.errorMessage} />} */}
             {this.props.errorCode && <Redirect to={`/${this.props.errorCode}`} />}
+            <ChatBtn />
             <Route path='/login' render={() => <LoginForm />} />
             <Route exact path='/' render={() => <Redirect to={'/profile'} />} />
             <Route path='/profile/:userId?' render={() => <ProfileContainer />} />

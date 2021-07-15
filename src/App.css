@@ -33,3 +33,27 @@
 .login-form-button {
   width: 100%;
 }
+.ant-popover {
+  position: fixed;
+}
+.ant-popover-inner-content {
+  padding: 0;
+}
+.ant-divider-horizontal {
+  margin-top: 0;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf; 
+}

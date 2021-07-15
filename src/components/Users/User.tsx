@@ -4,6 +4,7 @@ import { UsersType } from '../../types/types';
 import { Card, Avatar, Button, Row, Col } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import { userRedirect } from '../../utils/userRedirect';
 
 type PropsType = {
     user: UsersType,
@@ -15,15 +16,11 @@ type PropsType = {
 
 const User: React.FC<PropsType> = React.memo(({ user, myId, followingInProgress, followUser, unfollowUser }) => {
     const history = useHistory();
-    const routeChange = (id: number) => {
-        let path = '/profile/' + id
-        history.push(path)
-    }
     return (
         <Card style={{ width: "100%", marginBottom: "8px" }} key={user.id}>
             <Row gutter={[16, 8]} align={'middle'}>
                 <Col><Avatar size={64} src={user.photos.small} alt={user.name}>{user.name}</Avatar></Col>
-                <Col flex={'auto'} onClick={() => routeChange(user.id)} style={{ cursor: 'pointer', width: 'avilable' }}>
+                <Col flex={'auto'} onClick={() => userRedirect(user.id, history)} style={{ cursor: 'pointer', width: 'avilable' }}>
                     <Row><Title level={4}>{user.name}</Title></Row>
                     <Row>{user.status}</Row>
                 </Col>

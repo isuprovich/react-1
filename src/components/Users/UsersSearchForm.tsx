@@ -21,7 +21,7 @@ export const UsersSearchForm: React.FC<UsersSearchFormType> = React.memo(({ onFi
         }
         onFilterChange(filter)
     };
-    useEffect(() => { form.setFieldsValue(filter) }, [filter])
+    useEffect(() => { form.setFieldsValue(filter) }, [filter, form])
     return (
         <div>
             <Form
